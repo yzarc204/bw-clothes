@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+ # Bỏ qua các file và thư mục có thật
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Chuyển hướng tất cả yêu cầu đến index.php với tham số url
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
