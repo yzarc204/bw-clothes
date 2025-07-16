@@ -29,6 +29,7 @@ if (!$controllerName)
   die('404');
 $controllerName .= 'Controller';
 $controllerPath = './controllers/' . $controllerName . '.php';
+// Kiểm tra file có tồn tại hay không
 if (!file_exists($controllerPath)) {
   die('404');
 }
