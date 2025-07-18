@@ -4,7 +4,10 @@ class HomeController
 {
   public function index()
   {
-    echo 'Trang chủ';
+    require './views/layouts/boyka/html_start.php';
+    require './views/layouts/boyka/header.php';
+    require './views/layouts/boyka/footer.php';
+    require './views/layouts/boyka/html_end.php';
   }
 
   public function product($id)
