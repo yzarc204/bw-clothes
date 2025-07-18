@@ -1,51 +1,51 @@
 CREATE TABLE `users` (
     `id` integer PRIMARY KEY,
-    `username` varchar(30) UNIQUE,
-    `password` varchar(255),
-    `name` varchar(50)
+    `username` varchar(30) UNIQUE NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `name` varchar(50) NOT NULL
 );
 
 CREATE TABLE `categories` (
     `id` integer PRIMARY KEY,
-    `name` varchar(50)
+    `name` varchar(50) NOT NULL
 );
 
 CREATE TABLE `products` (
     `id` integer PRIMARY KEY,
-    `name` varchar(255),
-    `price` bigint,
+    `name` varchar(255) NOT NULL,
+    `price` bigint NOT NULL,
     `sale_price` bigint,
     `description` TINYTEXT,
     `category_id` integer,
-    `rating` float
+    `rating` float DEFAULT 0
 );
 
 CREATE TABLE `product_images` (
     `id` integer PRIMARY KEY,
-    `product_id` integer,
-    `image` varchar(255)
+    `product_id` integer NOT NULL,
+    `image_url` varchar(255) NOT NULL
 );
 
 CREATE TABLE `carts` (
     `id` integer PRIMARY KEY,
-    `user_id` integer,
-    `product_id` integer,
-    `quantity` integer
+    `user_id` integer NOT NULL,
+    `product_id` integer NOT NULL,
+    `quantity` integer NOT NULL
 );
 
 CREATE TABLE `wishlists` (
     `id` integer PRIMARY KEY,
-    `user_id` integer,
-    `product_id` integer
+    `user_id` integer NOT NULL,
+    `product_id` integer NOT NULL
 );
 
 CREATE TABLE `orders` (
     `id` integer PRIMARY KEY,
-    `user_id` integer,
-    `total_amount` integer,
-    `customer_name` varchar(255),
-    `address` varchar(255),
-    `phone_number` varchar(255),
+    `user_id` integer NOT NULL,
+    `total_amount` integer NOT NULL,
+    `customer_name` varchar(255) NOT NULL,
+    `address` varchar(255) NOT NULL,
+    `phone_number` varchar(255) NOT NULL,
     `order_time` datetime DEFAULT CURRENT_TIMESTAMP,
     `shipping_time` datetime,
     `delivered_time` datetime,
@@ -54,20 +54,20 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `order_details` (
     `id` integer PRIMARY KEY,
-    `order_id` integer,
-    `product_id` integer,
-    `product_name` varchar(255),
-    `price` bigint,
-    `product_image` varchar(255),
-    `quantity` integer,
-    `total_amount` bigint
+    `order_id` integer NOT NULL,
+    `product_id` integer NOT NULL,
+    `product_name` varchar(255) NOT NULL,
+    `price` bigint NOT NULL,
+    `product_image` varchar(255) NOT NULL,
+    `quantity` integer NOT NULL,
+    `total_amount` bigint NOT NULL
 );
 
 CREATE TABLE `ratings` (
     `id` integer PRIMARY KEY,
-    `user_id` integer,
-    `product_id` integer,
-    `rating` integer,
+    `user_id` integer NOT NULL,
+    `product_id` integer NOT NULL,
+    `rating` integer NOT NULL,
     `comment` tinytext
 );
 
