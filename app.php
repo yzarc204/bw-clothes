@@ -13,9 +13,9 @@ class App
     $this->url = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
   }
 
-  public function setRoutes($routes)
+  public function addRoutes($routes)
   {
-    $this->routes = $routes;
+    $this->routes = array_merge($this->routes, $routes);
   }
 
   public function resolveRouter()

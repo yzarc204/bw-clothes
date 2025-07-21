@@ -5,3 +5,7 @@ $routes = [
   '^login$' => ['Auth', 'login'],
   '^register$' => ['Auth', 'register']
 ];
+
+$adminRoutes = [
+
+];
