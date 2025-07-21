@@ -2,7 +2,8 @@ CREATE TABLE `users` (
     `id` integer PRIMARY KEY AUTO_INCREMENT,
     `username` varchar(30) UNIQUE NOT NULL,
     `password` varchar(255) NOT NULL,
-    `name` varchar(50) NOT NULL
+    `name` varchar(50) NOT NULL,
+    `is_admin` TINYINT(1) DEFAULT 0
 );
 
 CREATE TABLE `categories` (
