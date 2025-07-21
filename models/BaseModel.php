@@ -14,7 +14,7 @@ class BaseModel
   public function __construct()
   {
     try {
-      $this->db = new PDO("mysql:host={$this->host};dbname={$this->dbname};charset=utf-8", $this->username, $this->password);
+      $this->db = new PDO("mysql:host={$this->host};dbname={$this->dbname};charset=utf8", $this->username, $this->password);
     } catch (Exception $e) {
       die('Lỗi kết nối cơ sở dữ liệu');
     }

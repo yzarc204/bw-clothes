@@ -5,7 +5,7 @@ class User extends BaseModel
 {
   public function getByUserAndPass($username, $password)
   {
-    $sql = "SELECT * FROM users WHERE $username = :username AND password = MD5(:password)";
+    $sql = "SELECT * FROM users WHERE username = :username AND password = MD5(:password)";
     $stmt = $this->db->prepare($sql);
     $stmt->execute([
       'username' => $username,
