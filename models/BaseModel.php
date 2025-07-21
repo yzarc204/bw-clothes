@@ -1,22 +1,20 @@
 <?php
-
-require_once './config.php';
-
 class BaseModel
 {
-  private $host = DB_HOST;
-  private $username = DB_USER;
-  private $password = DB_PASS;
-  private $dbname = DB_NAME;
+    protected $conn;
 
-  protected $db;
+    public function __construct()
+    {
+        $host = 'localhost';
+        $dbname = 'bw_clothe';
+        $username = 'root';
+        $password = '';
 
-  public function __construct()
-  {
-    try {
-      $this->db = new PDO("mysql:host={$this->host};dbname={$this->dbname};charset=utf-8", $this->username, $this->password);
-    } catch (Exception $e) {
-      die('Lỗi kết nối cơ sở dữ liệu');
+        try {
+            $this->conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
+        }
     }
-  }
 }

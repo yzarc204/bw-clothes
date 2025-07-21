@@ -13,17 +13,34 @@
   <!-- CSS 
     ========================= -->
 
+<!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/bw-clothes/assets/boyka/images/favicon.ico" />
+
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/bw-clothes/assets/boyka/css/bootstrap.min.css" />
 
-  <!-- Font CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/font-awesome.min.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/bw-clothes/assets/boyka/css/font-awesome.min.css" />
 
-  <!-- Plugins CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/plugins.css" />
+  <!-- Slick CSS -->
+  <link rel="stylesheet" href="/bw-clothes/assets/boyka/css/plugins.css" />
+  <link rel="stylesheet" href="/bw-clothes/assets/boyka/css/style.css" />
+  <link rel="stylesheet" href="/bw-clothes/assets/boyka/css/slick.css">
 
-  <!-- Main Style CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/style.css" />
 
-  <!-- Modernizer JS -->
-  <script src="assets/boyka/js/vendor/modernizr-2.8.3.min.js"></script>
+  <!-- jQuery (CDN hoặc local nếu chắc chắn tồn tại) -->
+
+  <!-- Modernizr -->
+  <script src="/bw-clothes/assets/boyka/js/vendor/modernizr-2.8.3.min.js"></script>
+
+  <!-- Slick JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="/bw-clothes/assets/boyka/js/slick.min.js"></script>
+
+
+
+
+
+
+

@@ -1,9 +1,27 @@
 <?php
 
 $routes = [
-  '^$' => ['Home', 'index'], // Route gốc: /
-  '^product$' => ['Home', 'products'], // Route: /product
-  '^search$' => ['Home', 'search'], // Route: /search
-  '^product/(\d+)$' => ['Home', 'product'], // Route: /product/123
-  '^category/([a-zA-Z0-9-]+)$' => ['Home', 'category'], // Route: /category/abc
+'' => ['Home', 'index'],
+'index' => ['Home', 'index'],
+'home' => ['Home', 'index'],
+'product' => ['Home', 'products'],
+'product/(\d+)' => ['Home', 'product'],
+'category/(\d+)' => ['Category', 'index'],
+'search' => ['Home', 'search'],
+'shop' => ['Home', 'shop'],
+'login' => ['User', 'login'],
+'register' => ['User', 'register'],
+'account' => ['User', 'account'],
+'logout' => ['User', 'logout'],
+'cart' => ['Cart', 'index'],
+'cart/add/(\d+)' => ['Cart', 'addToCart'],
+'cart/remove/(\d+)' => ['Cart', 'remove'],
+'cart/update' => ['Cart', 'update'],
+'about' => ['Home', 'about'],
+'contact' => ['Home', 'contact'],
+'checkout' => ['Cart', 'checkout'],
+
+
+
 ];
+
