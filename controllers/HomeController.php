@@ -1,7 +1,13 @@
 <?php
+require_once './helpers/AuthHelper.php';
 
 class HomeController
 {
+  public function __construct()
+  {
+    checkLogin();
+  }
+
   public function index()
   {
     $products = [

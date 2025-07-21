@@ -2,5 +2,6 @@
 
 $routes = [
   '^$' => ['Home', 'index'],
-  '^login$' => ['Login', 'login']
+  '^login$' => ['Auth', 'login'],
+  '^register$' => ['Auth', 'register']
 ];

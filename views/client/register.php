@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đăng nhập</title>
+  <title>Đăng ký</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="assets/boyka/css/bootstrap.min.css" />
 
@@ -19,7 +19,7 @@
 </head>
 
 <body>
-  <section class="vh-100" style="background-color: #333">
+  <section style="background-color: #333; min-height: 100vh;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
@@ -31,20 +31,25 @@
               </div>
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
-                  <form method="POST" action="/login">
+                  <form method="POST" action="/register">
                     <div class="d-flex align-items-center mb-3 pb-1">
                       <i class="fa fa-cubes fa-3x me-3"></i>
                       <p class="h1 fw-bold mb-0">B&W - CLOZ</p>
                     </div>
 
-                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Đăng nhập vào tài khoản của bạn</h5>
+                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Đăng ký tài khoản mới</h5>
 
-                    <?php if (isset($_SESSION['error'])): ?>
-                      <div class="alert alert-danger" role="alert"><?= $_SESSION['error'] ?></div>
-                      <?php unset($_SESSION['error']); endif; ?>
+                    <?php if (isset($_SESSION['errors'])): ?>
+                      <div class="alert alert-danger" role="alert"><?= $_SESSION['errors'][0] ?></div>
+                      <?php unset($_SESSION['errors']); endif; ?>
+
+                    <?php if (isset($_SESSION['success'])): ?>
+                      <div class="alert alert-success" role="alert"><?= $_SESSION['success'] ?></div>
+                      <?php unset($_SESSION['success']); endif; ?>
 
                     <div class="form-outline mb-4">
-                      <input type="text" id="username" name="username" class="form-control form-control-lg" />
+                      <input type="text" id="username" name="username" class="form-control form-control-lg"
+                        value="<?= $_SESSION['old']['username'] ?? '' ?>" />
                       <label class="form-label" for="username">Tài khoản</label>
                     </div>
 
@@ -53,13 +58,25 @@
                       <label class="form-label" for="password">Mật khẩu</label>
                     </div>
 
+                    <div class="form-outline mb-4">
+                      <input type="password" id="confirmPassword" name="confirmPassword"
+                        class="form-control form-control-lg" />
+                      <label class="form-label" for="confirmPassword">Xác nhận mật khẩu</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="text" id="name" name="name" class="form-control form-control-lg"
+                        value="<?= $_SESSION['old']['name'] ?? '' ?>" />
+                      <label class="form-label" for="name">Họ và tên</label>
+                    </div>
+
                     <div class="pt-1 mb-4">
-                      <button class="btn btn-dark btn-lg btn-block" type="submit">Đăng nhập</button>
+                      <button class="btn btn-dark btn-lg btn-block" type="submit">Đăng ký</button>
                     </div>
 
                     <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
-                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Chưa có tài khoản? <a href="/"
-                        style="color: #393f81;">Đăng ký</a></p>
+                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Đã có tài khoản? <a href="/login"
+                        style="color: #393f81;">Đăng nhập</a></p>
                     <!-- <a href="#!" class="small text-muted">Terms of use.</a>
                     <a href="#!" class="small text-muted">Privacy policy</a> -->
                   </form>
