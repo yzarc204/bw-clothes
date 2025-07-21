@@ -4,10 +4,31 @@ class HomeController
 {
   public function index()
   {
-    require './views/layouts/boyka/html_start.php';
-    require './views/layouts/boyka/header.php';
-    require './views/layouts/boyka/footer.php';
-    require './views/layouts/boyka/html_end.php';
+    $products = [
+      [
+        'id' => 1,
+        'name' => 'Quần đùi',
+        'price' => 100,
+        'sale_price' => 50,
+        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
+      ],
+      [
+        'id' => 1,
+        'name' => 'Quần đùi',
+        'price' => 100,
+        'sale_price' => 50,
+        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
+      ],
+      [
+        'id' => 1,
+        'name' => 'Quần đùi',
+        'price' => 100,
+        'sale_price' => 50,
+        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
+      ]
+    ];
+
+    require './views/client/home.php';
   }
 
   public function product($id)

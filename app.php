@@ -20,11 +20,12 @@ class App
 
   public function resolveRouter()
   {
+    $controllerName = null;
+
     foreach ($this->routes as $pattern => $controller) {
       $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
       if (preg_match($pattern, $this->url, $matches)) {
-        $controllerName = $controller[0];
-        $this->action = $controller[1];
+        [$controllerName, $this->action] = $controller;
         $this->params = array_slice($matches, 1);
         break;
       }
@@ -35,8 +36,6 @@ class App
 
     $controllerName .= 'Controller';
     $controllerPath = './controllers/' . $controllerName . '.php';
-
-    // Kiểm tra file có tồn tại hay không
     if (!file_exists($controllerPath)) {
       die('404');
     }
@@ -44,7 +43,6 @@ class App
 
     if (!class_exists($controllerName))
       die('404');
-
     $this->controller = new $controllerName;
 
     if (!method_exists($this->controller, $this->action))
