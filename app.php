@@ -37,16 +37,18 @@ class App
     $controllerName .= 'Controller';
     $controllerPath = './controllers/' . $controllerName . '.php';
     if (!file_exists($controllerPath)) {
-      die('404');
+      die('404! Controller file not found');
     }
     require_once $controllerPath;
 
+    $controllerNameParts = explode('/', $controllerName);
+    $controllerName = array_pop($controllerNameParts);
     if (!class_exists($controllerName))
-      die('404');
+      die('404! Controller not existed');
     $this->controller = new $controllerName;
 
     if (!method_exists($this->controller, $this->action))
-      die('404');
+      die('404! Action not existed');
     call_user_func_array([$this->controller, $this->action], $this->params);
   }
 }

@@ -7,5 +7,5 @@ $routes = [
 ];
 
 $adminRoutes = [
-
+  '^admin$' => ['Admin/Dashboard', 'index'],
 ];
