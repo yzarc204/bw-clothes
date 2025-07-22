@@ -1,6 +1,7 @@
 <?php
 
 $routes = [
+<<<<<<< HEAD
 '' => ['Home', 'index'],
 'index' => ['Home', 'index'],
 'home' => ['Home', 'index'],
@@ -25,3 +26,13 @@ $routes = [
 
 ];
 
+=======
+  '^$' => ['Home', 'index'],
+  '^login$' => ['Auth', 'login'],
+  '^register$' => ['Auth', 'register']
+];
+
+$adminRoutes = [
+  '^admin$' => ['Admin/Dashboard', 'index'],
+];
+>>>>>>> 72d9345d2c0a5e27d868e143df4e5e033c025d49

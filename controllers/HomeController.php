@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 require_once 'models/ProductModel.php';
 require_once 'models/CategoryModel.php';
 require_once 'models/UserModel.php';
@@ -10,6 +11,45 @@ class HomeController
     public function index() {
         $productModel = new ProductModel();
         $categoryModel = new CategoryModel();
+=======
+require_once './helpers/AuthHelper.php';
+
+class HomeController
+{
+  public function __construct()
+  {
+    checkLogin();
+  }
+
+  public function index()
+  {
+    $products = [
+      [
+        'id' => 1,
+        'name' => 'Quần đùi',
+        'price' => 100,
+        'sale_price' => 50,
+        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
+      ],
+      [
+        'id' => 1,
+        'name' => 'Quần đùi',
+        'price' => 100,
+        'sale_price' => 50,
+        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
+      ],
+      [
+        'id' => 1,
+        'name' => 'Quần đùi',
+        'price' => 100,
+        'sale_price' => 50,
+        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
+      ]
+    ];
+
+    require './views/client/home.php';
+  }
+>>>>>>> 72d9345d2c0a5e27d868e143df4e5e033c025d49
 
         $limit = 8;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

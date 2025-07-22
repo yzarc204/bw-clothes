@@ -1,17 +1,18 @@
 CREATE TABLE `users` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `username` varchar(30) UNIQUE NOT NULL,
     `password` varchar(255) NOT NULL,
-    `name` varchar(50) NOT NULL
+    `name` varchar(50) NOT NULL,
+    `is_admin` TINYINT(1) DEFAULT 0
 );
 
 CREATE TABLE `categories` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `name` varchar(50) NOT NULL
 );
 
 CREATE TABLE `products` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
     `price` bigint NOT NULL,
     `sale_price` bigint,
@@ -21,26 +22,26 @@ CREATE TABLE `products` (
 );
 
 CREATE TABLE `product_images` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `product_id` integer NOT NULL,
     `image_url` varchar(255) NOT NULL
 );
 
 CREATE TABLE `carts` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `user_id` integer NOT NULL,
     `product_id` integer NOT NULL,
     `quantity` integer NOT NULL
 );
 
 CREATE TABLE `wishlists` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `user_id` integer NOT NULL,
     `product_id` integer NOT NULL
 );
 
 CREATE TABLE `orders` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `user_id` integer NOT NULL,
     `total_amount` integer NOT NULL,
     `customer_name` varchar(255) NOT NULL,
@@ -53,7 +54,7 @@ CREATE TABLE `orders` (
 );
 
 CREATE TABLE `order_details` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `order_id` integer NOT NULL,
     `product_id` integer NOT NULL,
     `product_name` varchar(255) NOT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE `order_details` (
 );
 
 CREATE TABLE `ratings` (
-    `id` integer PRIMARY KEY,
+    `id` integer PRIMARY KEY AUTO_INCREMENT,
     `user_id` integer NOT NULL,
     `product_id` integer NOT NULL,
     `rating` integer NOT NULL,
