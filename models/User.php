@@ -19,7 +19,8 @@ class User extends BaseModel
   {
     $sql = "SELECT * FROM users WHERE id = ?";
     $stmt = $this->db->prepare($sql);
-    $user = $stmt->execute([$id]);
+    $stmt->execute([$id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
     return $user;
   }
 

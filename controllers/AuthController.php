@@ -12,13 +12,16 @@ class AuthController
       if (empty($username) || empty($password)) {
         $_SESSION['error'] = 'Vui lòng nhập tài khoản hoặc mật khẩu';
         header('Location: /login');
+        exit;
       }
       if (!login($username, $password)) {
         $_SESSION['error'] = 'Tài khoản hoặc mật khẩu không đúng';
-        return header('Location: /login');
+        header('Location: /login');
+        exit;
       }
 
-      return header('Location: /');
+      header('Location: /');
+      exit;
     }
 
     require './views/client/login.php';
@@ -54,14 +57,16 @@ class AuthController
       if (!preg_match('/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ\s]+$/', $name))
         $errors[] = 'Tên không hợp lệ. Tên chỉ bao gồm chữ cái và khoảng trắng';
       if (count($errors) > 0) {
-        $_SESSION['errors'] = $errors;
-        return header('Location: /register');
+        $_SESSION['error'] = $errors[0];
+        header('Location: /register');
+        exit;
       }
 
       $userModel->create($username, $password, $name);
       $_SESSION['success'] = 'Đăng ký thành công';
       unset($_SESSION['old']);
-      return header('Location: /register');
+      header('Location: /register');
+      exit;
     }
 
     require './views/client/register.php';
