@@ -9,3 +9,7 @@ $routes = [
 $adminRoutes = [
   '^admin$' => ['Admin/Dashboard', 'index'],
 ];
+
+$categoryRoutes = [
+  '^admin/category/create$' => ['Admin/Category', 'create'],
+];

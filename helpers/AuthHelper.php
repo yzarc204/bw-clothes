@@ -1,7 +1,12 @@
 <?php
 require_once './models/User.php';
 
-function login($username, $password)
+/**
+ * Kiểm tra tài khoản và mật khẩu có trùng khớp với tài khoản nào không
+ * Nếu đúng thì đẩy user_id vào $_SESSIOn để đăng nhập
+ * @return bool
+ */
+function login(string $username, string $password): bool
 {
   $userModel = new User();
   $user = $userModel->getByUserAndPass($username, $password);
@@ -12,12 +17,20 @@ function login($username, $password)
   return true;
 }
 
+/**
+ * Đăng xuất: xoá $_SESSION['user_id']
+ * @return void
+ */
 function logout()
 {
   unset($_SESSION['user_id']);
 }
 
-function getUser()
+/**
+ * Lấy data của user đang được đăng nhập
+ * @return array|null Trả về mảng user nếu đã đăng nhập, trả về null nếu không đăng nhập
+ */
+function getCurrentUser(): ?array
 {
   $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
   if (!$userId)
@@ -27,14 +40,29 @@ function getUser()
   return $user;
 }
 
-function checkLogin()
+/**
+ * Kiểm tra đăng nhập, nếu chưa đăng nhập thì redirect về trang login
+ * @return void
+ */
+function checkLogin(): void
 {
-  if (!isset($_SESSION['user_id']))
-    return header('Location: /login');
+  $user = getCurrentUser();
+  if (!$user) {
+    header('Location: /login');
+    exit;
+  }
+}
 
-  $userModel = new User();
-  $userId = $_SESSION['user_id'];
-  $user = $userModel->getById($userId);
-  if (!$user)
-    return header('Location: /login');
+/**
+ * Kiểm tra đăng nhập và người đăng nhập có quyền admin hay không. Redirect về trang chủ nếu không phải admin
+ * @return void
+ */
+function checkAdminLogin(): void
+{
+  checkLogin();
+  $user = getCurrentUser();
+  if (!$user['is_admin']) {
+    header('Location: /');
+    exit;
+  }
 }

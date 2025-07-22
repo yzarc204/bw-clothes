@@ -1,7 +1,12 @@
+<?php
+$user = getCurrentUser();
+?>
+
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 
 <head>
+  <base href="/">
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <title>Boyka - Fashion eCommerce Bootstrap 4 HTML5 Template</title>

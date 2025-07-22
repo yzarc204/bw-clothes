@@ -39,9 +39,9 @@
 
                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Đăng ký tài khoản mới</h5>
 
-                    <?php if (isset($_SESSION['errors'])): ?>
-                      <div class="alert alert-danger" role="alert"><?= $_SESSION['errors'][0] ?></div>
-                      <?php unset($_SESSION['errors']); endif; ?>
+                    <?php if (isset($_SESSION['error'])): ?>
+                      <div class="alert alert-danger" role="alert"><?= $_SESSION['error'] ?></div>
+                      <?php unset($_SESSION['error']); endif; ?>
 
                     <?php if (isset($_SESSION['success'])): ?>
                       <div class="alert alert-success" role="alert"><?= $_SESSION['success'] ?></div>
