@@ -133,7 +133,7 @@
                       </ul>
                     </li>
                     <li>
-                      <a href="shop.html">Shop <i class="fa fa-angle-down"></i></a>
+                      <a href="shop">Shop <i class="fa fa-angle-down"></i></a>
                       <ul class="mega-menu">
                         <li>
                           <a href="#">Shop PageLayout</a>
