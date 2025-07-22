@@ -288,8 +288,8 @@
                     <i class="fa fa-search"></i> <span>Search</span>
                   </div>
                   <div class="search-box main-search-active">
-                    <form action="#" class="search-box-inner">
-                      <input type="text" placeholder="Search our catalog" />
+                    <form action="search" class="search-box-inner">
+                      <input type="text" name="keyword" placeholder="Tìm kiếm ..." required />
                       <button class="search-btn" type="submit">
                         <i class="fa fa-search"></i>
                       </button>
@@ -378,6 +378,6 @@
           </div>
         </div>
       </div>
-      <!-- Header-bottom end -->
+      <!-- Header-botto m end -->
     </div>
     <!-- Header-area end -->

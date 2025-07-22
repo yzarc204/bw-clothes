@@ -2,6 +2,8 @@
 require_once './helpers/AuthHelper.php';
 require_once './models/Product.php';
 require_once './models/Category.php';
+require_once 'models/Variant.php';
+
 
 class HomeController
 {
@@ -36,12 +38,45 @@ class HomeController
   }
   public function product($id)
   {
-    echo 'Trang sản phẩm ' . $id;
+    $productModel = new Product();
+    $variantModel = new Variant();
+    $categoryModel = new Category();
+
+    $product = $productModel->getById($id);
+    $variants = $variantModel->getVariantsByProductId($id);
+    $images = $productModel->getImagesByProductId($id);
+
+    // ✅ THÊM DÒNG NÀY ĐỂ LẤY SẢN PHẨM LIÊN QUAN
+    $relatedProducts = $productModel->getRelatedProducts($product['category_id'], $id);
+
+    // Tách size và màu
+    $sizes = [];
+    $colors = [];
+    foreach ($variants as $variant) {
+      if (!isset($sizes[$variant['size_id']])) {
+        $sizes[$variant['size_id']] = [
+          'id' => $variant['size_id'],
+          'name' => $variant['size_name']
+        ];
+      }
+      if (!isset($colors[$variant['color_id']])) {
+        $colors[$variant['color_id']] = [
+          'id' => $variant['color_id'],
+          'name' => $variant['color_name']
+        ];
+      }
+    }
+
+    include 'views/client/product_details.php';
   }
-
-
   public function search()
   {
-    echo 'Trang search';
+    $keyword = $_GET['keyword'] ?? '';
+
+    $productModel = new Product();
+    $products = $productModel->searchProducts($keyword);
+
+    $breadcrumbTitle = "Kết quả tìm kiếm cho: " . htmlspecialchars($keyword);
+    include 'views/client/Search_results.php';
   }
 }

@@ -58,7 +58,7 @@ require './views/layouts/boyka/header.php';
                             </div>
                             <div class="product-content text-center mt-2">
                                 <h5 class="product-name">
-                                    <a href="product/<?= $product['id'] ?>">
+                                    <a href="/bw-clothes/product/<?= $product['id'] ?>">
                                         <?= htmlspecialchars($product['name']) ?>
                                     </a>
                                 </h5>

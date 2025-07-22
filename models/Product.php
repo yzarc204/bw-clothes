@@ -57,4 +57,81 @@ class Product extends BaseModel
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getById($id)
+    {
+        $stmt = $this->db->prepare("
+        SELECT p.*, 
+               (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
+        FROM products p
+        WHERE p.id = ?
+    ");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getRelatedProducts($categoryId, $excludeId)
+    {
+        $stmt = $this->db->prepare("
+        SELECT p.*, 
+               (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
+        FROM products p
+        WHERE p.category_id = ? AND p.id != ?
+        LIMIT 4
+    ");
+        $stmt->execute([$categoryId, $excludeId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+    public function getVariantsByProductId($productId)
+    {
+        $stmt = $this->db->prepare("
+        SELECT pv.*, s.name AS size_name, c.name AS color_name
+        FROM product_variants pv
+        JOIN sizes s ON pv.size_id = s.id
+        JOIN colors c ON pv.color_id = c.id
+        WHERE pv.product_id = ?
+    ");
+        $stmt->execute([$productId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Lấy danh sách tất cả size
+    public function getAllSizes()
+    {
+        $stmt = $this->db->query("SELECT * FROM sizes");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Lấy danh sách tất cả màu
+    public function getAllColors()
+    {
+        $stmt = $this->db->query("SELECT * FROM colors");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getVariants($productId)
+    {
+        $sql = "SELECT * FROM product_variants WHERE product_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$productId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getImagesByProductId($productId)
+    {
+        $sql = "SELECT * FROM product_images WHERE product_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$productId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function searchProducts($keyword)
+    {
+        $sql = "SELECT p.*, 
+                   (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
+            FROM products p 
+            WHERE p.name LIKE :keyword OR p.description LIKE :keyword";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['keyword' => '%' . $keyword . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
