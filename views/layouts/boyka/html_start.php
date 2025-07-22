@@ -15,8 +15,7 @@ $user = getCurrentUser();
   <!-- Favicon -->
   <link rel="shortcut icon" type="image/x-icon" href="assets/boyka/images/favicon.ico" />
 
-  <!-- CSS 
-    ========================= -->
+  <!-- CSS ========================= -->
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="assets/boyka/css/bootstrap.min.css" />
