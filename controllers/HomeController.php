@@ -1,5 +1,7 @@
 <?php
 require_once './helpers/AuthHelper.php';
+require_once './models/Product.php';
+require_once './models/Category.php';
 
 class HomeController
 {
@@ -10,31 +12,21 @@ class HomeController
 
   public function index()
   {
-    $products = [
-      [
-        'id' => 1,
-        'name' => 'Quần đùi',
-        'price' => 100,
-        'sale_price' => 50,
-        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
-      ],
-      [
-        'id' => 1,
-        'name' => 'Quần đùi',
-        'price' => 100,
-        'sale_price' => 50,
-        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
-      ],
-      [
-        'id' => 1,
-        'name' => 'Quần đùi',
-        'price' => 100,
-        'sale_price' => 50,
-        'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sK-vCdQkyU7aXl7BE9FMrBuJfBCSNyAh0A&s'
-      ]
-    ];
+    $productModel = new Product();
+    $categoryModel = new Category();
 
-    require './views/client/home.php';
+    $limit = 8;
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    if ($page < 1) $page = 1;
+    $offset = ($page - 1) * $limit;
+
+    $products = $productModel->getPaginated($limit, $offset);
+    $totalProducts = $productModel->getTotalCount();
+    $totalPages = ceil($totalProducts / $limit);
+    $categories = $categoryModel->getAll();
+
+
+    include 'views/client/home.php';
   }
 
   public function product($id)
