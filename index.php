@@ -7,5 +7,4 @@ session_start();
 $app = new App();
 $app->addRoutes($routes);
 $app->addRoutes($adminRoutes);
-$app->addRoutes($categoryRoutes);
 $app->resolveRouter();
