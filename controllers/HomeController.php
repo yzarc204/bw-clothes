@@ -15,20 +15,25 @@ class HomeController
     $productModel = new Product();
     $categoryModel = new Category();
 
-    $limit = 8;
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    if ($page < 1) $page = 1;
-    $offset = ($page - 1) * $limit;
-
-    $products = $productModel->getPaginated($limit, $offset);
-    $totalProducts = $productModel->getTotalCount();
-    $totalPages = ceil($totalProducts / $limit);
+    $products = $productModel->getLimit(8);
     $categories = $categoryModel->getAll();
-
 
     include 'views/client/home.php';
   }
+  public function shop()
+  {
+    $productModel = new Product();
+    $categoryModel = new Category();
 
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    $limit = 8;
+    $paginationHref = '/shop?page=';
+
+    $products = $productModel->getPaginated($page, $limit); // hoặc phân trang giống như index()
+    $categories = $categoryModel->getAll();
+
+    include 'views/client/shop.php';
+  }
   public function product($id)
   {
     echo 'Trang sản phẩm ' . $id;

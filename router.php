@@ -3,7 +3,8 @@
 $routes = [
   '^$' => ['Home', 'index'],
   '^login$' => ['Auth', 'login'],
-  '^register$' => ['Auth', 'register']
+  '^register$' => ['Auth', 'register'],
+  '^shop$' => ['Home', 'shop'],
 ];
 
 $adminRoutes = [
