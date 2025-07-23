@@ -18,4 +18,16 @@ class Category extends BaseModel
     $stmt = $this->db->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
+  public function getBySlug($slug)
+  {
+    $stmt = $this->db->prepare("SELECT * FROM categories WHERE slug = ?");
+    $stmt->execute([$slug]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+  public function getById($id)
+  {
+    $stmt = $this->db->prepare("SELECT * FROM categories WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
 }

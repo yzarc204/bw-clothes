@@ -5,7 +5,7 @@ require './views/layouts/boyka/header.php';
 
 <!-- Banner -->
 <div class="hero-slider hero-slider-one slick-banner">
-    <div class="single-slide" style="background-image: url('assets/boyka/images/slider/banner1.jpg');">
+    <div class="single-slide" style="background-image: url('assets/boyka/images/slider/slider-bg-1.jpg');">
         <div class="hero-content-one container text-center text-white">
             <h1>Classic Leather Accessories<br><small>Amazing For Men's</small></h1>
             <a href="shop" class="btn slider-btn uppercase"><span><i class="fa fa-plus"></i> Shop Now</span></a>
@@ -73,7 +73,9 @@ require './views/layouts/boyka/header.php';
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="col-12"><p>Chưa có sản phẩm để hiển thị.</p></div>
+                <div class="col-12">
+                    <p>Chưa có sản phẩm để hiển thị.</p>
+                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -84,13 +86,12 @@ require './views/layouts/boyka/header.php';
             <?php foreach ($categories as $category): ?>
                 <div>
                     <div class="categories-list-post-item text-center">
-                        <img 
-                            src="<?= htmlspecialchars($category['image']) ?>" 
-                            alt="<?= htmlspecialchars($category['name']) ?>" 
+                        <img
+                            src="<?= htmlspecialchars($category['image']) ?>"
+                            alt="<?= htmlspecialchars($category['name']) ?>"
                             class="img-fluid"
-                            style="height: 350px; width: 100%; object-fit: cover;"
-                        >
-                        <a href="category/<?= $category['id'] ?>" class="category-inner d-block mt-2">
+                            style="height: 350px; width: 100%; object-fit: cover;">
+                        <a href="/category/<?= $category['id'] ?>" class="category-inner d-block mt-2">
                             <?= htmlspecialchars($category['name']) ?>
                         </a>
                     </div>

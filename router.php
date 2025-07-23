@@ -11,6 +11,11 @@ $routes = [
   'cart/remove/(\d+)' => ['Cart', 'remove'],
   'cart/update' => ['Cart', 'update'],
   'search' => ['Home', 'search'],
+  'category/(\d+)' => ['Home', 'category'],
+  'checkout' => ['Cart', 'checkout'],
+  'about' => ['Home', 'about'],
+  'contact' => ['Home', 'contact'],
+
 ];
 
 $adminRoutes = [

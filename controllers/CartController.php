@@ -1,14 +1,18 @@
 <?php
 require_once 'models/Product.php';
 require_once 'models/BaseModel.php';
+require_once 'helpers/AuthHelper.php';
 class CartController extends BaseModel
 {
-
-
+    public function __construct()
+    {
+        parent::__construct();
+        checkLogin();
+    }
 
     public function index()
     {
-
+        $user = getCurrentUser();
         $stmt = $this->db->prepare("
             SELECT c.*, p.name, p.price, 
                    (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
@@ -16,20 +20,17 @@ class CartController extends BaseModel
             JOIN products p ON c.product_id = p.id
             WHERE c.user_id = ?
         ");
+        $stmt->execute([$user['id']]);
         $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
         include 'views/client/Cart.php';
     }
 
     public function addToCart($productId)
     {
-        $userId = $_SESSION['user']['id'] ?? null;
-        if (!$userId) {
-            header("Location: /bw-clothes/index.php?url=login");
-        }
-
+        $user = getCurrentUser();
         // Kiểm tra xem sản phẩm đã tồn tại trong giỏ chưa
         $stmt = $this->db->prepare("SELECT * FROM carts WHERE user_id = ? AND product_id = ?");
-        $stmt->execute([$userId, $productId]);
+        $stmt->execute([$user['id'], (int)$productId]);
         $item = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($item) {
@@ -38,40 +39,51 @@ class CartController extends BaseModel
                 ->execute([$item['id']]);
         } else {
             // Giả sử bạn có $userId và $productId
-            $stmt = $this->db->prepare("INSERT INTO carts (user_id, product_id, quantity) VALUES (?, ?, ?)");
-            $stmt->execute([$userId, $productId, 1]);
+            $stmt = $this->db->prepare("INSERT INTO carts (user_id, product_id, quantity) VALUES (?, ?, 1)")->execute([$user['id'], $productId]);
         }
 
-        header("Location: /bw-clothes/cart");
+        header("Location: /cart");
         exit;
     }
 
     public function remove($productId)
     {
-        $userId = $_SESSION['user']['id'] ?? null;
-        if (!$userId) die('Bạn cần đăng nhập.');
+        $user = getCurrentUser();
 
         $stmt = $this->db->prepare("DELETE FROM carts WHERE user_id = ? AND product_id = ?");
-        $stmt->execute([$userId, $productId]);
+        $stmt->execute([$user['id'], $productId]);
 
-        header("Location: /bw-clothes/index.php?url=cart");
+        header("Location: /cart");
         exit;
     }
 
     public function update()
     {
+        $user = getCurrentUser();
+        $userId = $user['id'];
         foreach ($_POST['quantities'] as $productId => $qty) {
-            if (isset($_SESSION['cart'][$productId])) {
-                $_SESSION['cart'][$productId]['quantity'] = max(1, (int)$qty);
-            }
+            $qty = max(1, (int)$qty);
+
+            $stmt = $this->db->prepare("
+                INSERT INTO carts (user_id, product_id, quantity)
+                VALUES (:user_id, :product_id, :quantity)
+                ON DUPLICATE KEY UPDATE quantity = :quantity
+            ");
+            $stmt->execute([
+                ':user_id' => $userId,
+                ':product_id' => $productId,
+                ':quantity' => $qty
+            ]);
         }
-        header("Location: /bw-clothes/cart");
+
+        header("Location: /cart");
         exit;
     }
+
     public function checkout()
     {
-        $userId = $_SESSION['user']['id'] ?? null;
-        if (!$userId) die('Bạn cần đăng nhập để thanh toán.');
+        $user = getCurrentUser();
+        $userId = $user['id'];
 
         // Lấy giỏ hàng
         $stmt = $this->db->prepare("
@@ -86,15 +98,17 @@ class CartController extends BaseModel
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Lấy thông tin từ form
-            $customerName = $_POST['customer_name'] ?? null;
-            $phone = $_POST['phone_number'] ?? null;
-            $address = $_POST['address'] ?? null;
+            $customerName = $_POST['customer_name'] ?? '';
+            $phone = $_POST['phone_number'] ?? '';
+            $address = $_POST['address'] ?? '';
 
-            if (!$customerName || !$phone || !$address) {
+            if (empty($customerName) || empty($phone) || empty($address)) {
                 die('Vui lòng điền đầy đủ thông tin.');
             }
 
-
+            if (empty($cart)) {
+                die('Giỏ hàng rỗng.');
+            }
 
             // Tính tổng tiền
             $total = 0;
@@ -102,7 +116,7 @@ class CartController extends BaseModel
                 $total += $item['price'] * $item['quantity'];
             }
 
-            // 1. Thêm vào bảng orders (phù hợp với cấu trúc bạn gửi)
+            // 1. Thêm vào bảng orders
             $stmt = $this->db->prepare("
             INSERT INTO orders (user_id, customer_name, phone_number, address, total_amount, created_at)
             VALUES (?, ?, ?, ?, ?, NOW())
@@ -112,27 +126,28 @@ class CartController extends BaseModel
             $orderId = $this->db->lastInsertId();
 
             // 2. Thêm vào bảng order_details
+            $stmt = $this->db->prepare("
+            INSERT INTO order_details (order_id, product_id, product_name, product_image, quantity, price, total_amount)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
             foreach ($cart as $item) {
                 $totalAmount = $item['price'] * $item['quantity'];
-                $stmt = $this->db->prepare("
-                INSERT INTO order_details (order_id, product_id, product_name, product_image, quantity, price, total_amount)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ");
                 $stmt->execute([
                     $orderId,
                     $item['product_id'],
-                    $item['name'],                          // ← tên sản phẩm
-                    $item['image'],                         // ← ảnh sản phẩm
+                    $item['name'],
+                    $item['image'],
                     $item['quantity'],
                     $item['price'],
                     $totalAmount
                 ]);
             }
+
             // 3. Xóa giỏ hàng
             $this->db->prepare("DELETE FROM carts WHERE user_id = ?")->execute([$userId]);
 
-            // 4. Chuyển trang hoặc thông báo thành công
-            header("Location: /bw-clothes/");
+            // 4. Chuyển hướng
+            header("Location: /cart?success=1");
             exit;
         }
 

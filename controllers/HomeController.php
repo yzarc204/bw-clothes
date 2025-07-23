@@ -1,8 +1,9 @@
 <?php
 require_once './helpers/AuthHelper.php';
+require_once './helpers/ViewHelper.php';
 require_once './models/Product.php';
 require_once './models/Category.php';
-require_once 'models/Variant.php';
+require_once './models/Variant.php';
 
 
 class HomeController
@@ -79,4 +80,30 @@ class HomeController
     $breadcrumbTitle = "Kết quả tìm kiếm cho: " . htmlspecialchars($keyword);
     include 'views/client/Search_results.php';
   }
+public function category($id)
+{
+    $categoryModel = new Category();
+    $productModel = new Product();
+
+    // Lấy danh mục theo ID
+    $category = $categoryModel->getById($id);
+    if (!$category) {
+        include 'views/errors/404.php'; // tạo file 404 nếu cần
+        return;
+    }
+
+    // Lấy sản phẩm theo category_id
+    $products = $productModel->getByCategoryId($category['id']);
+    $breadcrumbTitle = "Danh mục: " . htmlspecialchars($category['name']);
+
+    include 'views/client/Category.php';
+}
+    public function about(){
+        include 'views/client/about.php';
+    }
+    public function contact(){
+        include 'views/client/contact.php';
+    }
+
+
 }
