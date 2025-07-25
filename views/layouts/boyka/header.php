@@ -110,7 +110,7 @@
             <div class="col-lg-2 col-4">
               <!-- logo start -->
               <div class="logo">
-                <a href="index.html"><img src="assets/boyka/images/logo/logo.png" alt="" /></a>
+                <a href=""><img src="assets/boyka/images/logo/logo.png" alt="" /></a>
               </div>
               <!-- logo end -->
             </div>
@@ -120,8 +120,8 @@
                 <nav class="main-navigation">
                   <ul>
                     <li class="active">
-                      <a href="index.html">Home <i class="fa fa-angle-down"></i></a>
-                      <ul class="sub-menu">
+                      <a href="">Home <i class=""></i></a>
+                      <!-- <ul class="sub-menu">
                         <li><a href="index.html">Home Page 1</a></li>
                         <li><a href="index-2.html">Home Page 2</a></li>
                         <li><a href="index-3.html">Home Page 3</a></li>
@@ -130,11 +130,11 @@
                         <li><a href="index-6.html">Home Page 6</a></li>
                         <li><a href="index-7.html">Home Page 7</a></li>
                         <li><a href="index-8.html">Home Page 8</a></li>
-                      </ul>
+                      </ul> -->
                     </li>
                     <li>
-                      <a href="shop">Shop <i class="fa fa-angle-down"></i></a>
-                      <ul class="mega-menu">
+                      <a href="shop">Shop <i class=""></i></a>
+                      <!-- <ul class="mega-menu">
                         <li>
                           <a href="#">Shop PageLayout</a>
                           <ul>
@@ -202,9 +202,9 @@
                             </li>
                           </ul>
                         </li>
-                      </ul>
+                      </ul> -->
                     </li>
-                    <li>
+                    <!-- <li>
                       <a href="shop.html">Page <i class="fa fa-angle-down"></i></a>
                       <ul class="mega-menu four-column-menu">
                         <li>
@@ -252,7 +252,7 @@
                           </ul>
                         </li>
                       </ul>
-                    </li>
+                    </li> -->
                     <li>
                       <a href="blog.html">Blog <i class="fa fa-angle-down"></i></a>
                       <ul class="sub-menu">
@@ -274,8 +274,8 @@
                         </li>
                       </ul>
                     </li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact-us.html">Contact us</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact us</a></li>
                   </ul>
                 </nav>
               </div>
@@ -288,8 +288,8 @@
                     <i class="fa fa-search"></i> <span>Search</span>
                   </div>
                   <div class="search-box main-search-active">
-                    <form action="#" class="search-box-inner">
-                      <input type="text" placeholder="Search our catalog" />
+                    <form action="search" class="search-box-inner">
+                      <input type="text" name="keyword" placeholder="Tìm kiếm ..." required />
                       <button class="search-btn" type="submit">
                         <i class="fa fa-search"></i>
                       </button>
@@ -378,6 +378,6 @@
           </div>
         </div>
       </div>
-      <!-- Header-bottom end -->
+      <!-- Header-botto m end -->
     </div>
     <!-- Header-area end -->

@@ -1,7 +1,6 @@
 <?php
 require_once './models/BaseModel.php';
 
-<<<<<<< HEAD
 class Category extends BaseModel
 {
   public function create($name)
@@ -13,13 +12,22 @@ class Category extends BaseModel
     ]);
     return $this->db->lastInsertId();
   }
-=======
-class Category extends BaseModel {
-    public function getAll()
-    {
-        $sql = "SELECT * FROM categories";
-        $stmt = $this->db->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
->>>>>>> bedc15886438c242270ef0a200f35f9949674d4b
+  public function getAll()
+  {
+    $sql = "SELECT * FROM categories";
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+  public function getBySlug($slug)
+  {
+    $stmt = $this->db->prepare("SELECT * FROM categories WHERE slug = ?");
+    $stmt->execute([$slug]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+  public function getById($id)
+  {
+    $stmt = $this->db->prepare("SELECT * FROM categories WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
 }

@@ -1,6 +1,9 @@
 <?php include 'views/layouts/boyka/html_start.php'; ?>
 <?php include 'views/layouts/boyka/header.php'; ?>
-
+<?php
+$breadcrumbTitle = 'shop';
+include './views/layouts/boyka/breadcrumb.php';
+?>
 
 <!-- Banner, slider,... -->
 
