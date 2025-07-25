@@ -134,4 +134,15 @@ class Product extends BaseModel
         $stmt->execute(['keyword' => '%' . $keyword . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getByCategoryId($categoryId)
+    {
+        $stmt = $this->db->prepare("
+        SELECT p.*, 
+               (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
+        FROM products p
+        WHERE p.category_id = ?
+    ");
+        $stmt->execute([$categoryId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
