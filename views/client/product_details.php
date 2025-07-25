@@ -8,44 +8,6 @@ $breadcrumbTitle = 'Thông tin sản phẩm';
 include './views/layouts/boyka/breadcrumb.php';
 ?>
 
-<!-- <style>
-    /* Chỉnh sửa để 3 ảnh nhỏ chiếm đều chiều ngang của ảnh lớn */
-    .product-dec-slider {
-        /* display: flex;
-  justify-content: space-between; hoặc flex-start */
-        gap: 10px;
-        /* Khoảng cách giữa các ảnh nhỏ */
-        margin-top: 15px;
-        margin-left: -50px;
-        padding: 0;
-        width: 450px;
-        /* Bằng chiều rộng của ảnh lớn */
-        overflow: hidden;
-        flex-wrap: nowrap;
-        box-sizing: border-box;
-        float: left;
-    }
-
-    .product-dec-small {
-        flex: 1 1 calc(33.333% - 6.66px);
-        /* 3 ảnh nhỏ đều nhau, trừ khoảng cách */
-        cursor: pointer;
-        box-sizing: border-box;
-        /* border-radius: 6px; */
-        overflow: hidden;
-        border: 2px solid transparent;
-        transition: border-color 0.3s ease;
-    }
-
-    .product-dec-small img {
-        width: 100%;
-        height: 100px;
-        /* object-fit: cover;
-  display: block; */
-        /* border-radius: 6px; */
-    }
-</style> -->
-
 <div class="content-wraper">
     <div class="container">
         <div class="row single-product-area">
@@ -114,7 +76,7 @@ include './views/layouts/boyka/breadcrumb.php';
                                         </div>
                                     </div>
                                     <!-- <button class="add-to-cart" type="submit" >Add to cart</button> -->
-                                    <a href="/cart/add/<?= $product['id'] ?>">Thêm vào giỏ</a>
+                                    <a class="add-to-cart" href="/cart/add/<?= $product['id'] ?>">Thêm vào giỏ</a>
                                 </div>
                             </div>
                         </form>

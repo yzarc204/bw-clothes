@@ -14,11 +14,11 @@ class CartController extends BaseModel
     {
         $user = getCurrentUser();
         $stmt = $this->db->prepare("
-            SELECT c.*, p.name, p.price, 
-                   (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
-            FROM carts c
-            JOIN products p ON c.product_id = p.id
-            WHERE c.user_id = ?
+        SELECT c.*, p.name, p.price, p.sale_price,
+            (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
+        FROM carts c
+        JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = ?
         ");
         $stmt->execute([$user['id']]);
         $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -87,8 +87,8 @@ class CartController extends BaseModel
 
         // Lấy giỏ hàng
         $stmt = $this->db->prepare("
-        SELECT c.*, p.name, p.price, 
-               (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
+        SELECT c.*, p.name, p.price, p.sale_price,
+            (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
         FROM carts c
         JOIN products p ON c.product_id = p.id
         WHERE c.user_id = ?

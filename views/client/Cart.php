@@ -81,14 +81,19 @@ include './views/layouts/boyka/breadcrumb.php';
                                                     <button type="button" class="qty-btn" onclick="changeQuantity(1, <?= $item['product_id'] ?>)">+</button>
                                                 </div>
                                             </td>
-                                            <td><?= number_format($item['price'] * $item['quantity']) ?> đ</td>
+                                            <td>
+                                                <?= number_format(((isset($item['sale_price']) && $item['sale_price'] > 0) ? $item['sale_price'] : $item['price']) * $item['quantity']) ?> đ
+                                            </td>
                                             <td>
                                                 <a href="/cart/remove/<?= $item['product_id'] ?>" class="btn btn-danger btn-sm">
                                                     <i class="fa fa-close"></i>
                                                 </a>
                                             </td>
                                         </tr>
-                                        <?php $total += $item['price'] * $item['quantity']; ?>
+                                        <?php
+                                        $unitPrice = (isset($item['sale_price']) && $item['sale_price'] > 0) ? $item['sale_price'] : $item['price'];
+                                        $total += $unitPrice * $item['quantity'];
+                                        ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
