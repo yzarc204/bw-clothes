@@ -7,7 +7,7 @@ class CategoryController
 {
   public function __construct()
   {
-    checkAdminLogin();
+    checkAdminLogin(); // Kiểm tra đăng nhập admin
   }
 
   public function index()
@@ -23,15 +23,21 @@ class CategoryController
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_SESSION['old'] = $_POST;
-      $name = isset($_POST['name']) ? $_POST['name'] : null;
+      $name = isset($_POST['name']) ? trim($_POST['name']) : null;
 
-      $this->validate($name);
+      $errors = $this->validate($name);
+      if (count($errors) > 0) {
+        $_SESSION['error'] = $errors[0];
+        header('Location: /admin/category/create');
+        exit;
+      }
 
       $categoryModel = new Category();
       $categoryModel->create($name);
 
       $_SESSION['success'] = 'Thêm thành công danh mục ' . $name;
       unset($_SESSION['old']);
+      unset($_SESSION['error']);
       header('Location: /admin/category/create');
       exit;
     }
@@ -47,13 +53,20 @@ class CategoryController
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_SESSION['old'] = $_POST;
-      $name = $_POST['name'] ?? null;
-      $this->validate($name);
+      $name = isset($_POST['name']) ? trim($_POST['name']) : null;
+
+      $errors = $this->validate($name);
+      if (count($errors) > 0) {
+        $_SESSION['error'] = $errors[0];
+        header("Location: /admin/category/{$categoryId}/edit");
+        exit;
+      }
 
       $categoryModel->update($categoryId, $name);
 
       $_SESSION['success'] = "Cập nhật danh mục {$name} thành công";
       unset($_SESSION['old']);
+      unset($_SESSION['error']); // Làm sạch error cũ nếu có
       header("Location: /admin/category/{$categoryId}/edit");
       exit;
     }
@@ -76,21 +89,18 @@ class CategoryController
   private function validate($name)
   {
     $errors = [];
-    if (empty($name))
+    if (empty($name)) {
       $errors[] = 'Vui lòng nhập tên danh mục';
-    if (strlen($name) > 255)
-      $errors[] = 'Tên danh mục không được vượt quá 255 kí tự';
-    if (count($errors) > 0) {
-      $_SESSION['error'] = $errors[0];
-      header('Location: /admin/category/create');
-      exit;
     }
+    if (strlen($name) > 255) {
+      $errors[] = 'Tên danh mục không được vượt quá 255 kí tự';
+    }
+    return $errors;
   }
 
   private function validateCategoryId($categoryId)
   {
     $categoryModel = new Category();
-
     $category = $categoryModel->getById($categoryId);
     if (!$category) {
       $_SESSION['error'] = 'Danh mục không tồn tại';
