@@ -59,4 +59,21 @@ class Category extends BaseModel
       'total_pages' => $totalPages,
     ];
   }
+
+  public function update($id, $name)
+  {
+    $sql = "UPDATE categories SET name = :name WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('name', $name, PDO::PARAM_STR);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+  }
+
+  public function delete($id)
+  {
+    $sql = "DELETE FROM categories WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+  }
 }
