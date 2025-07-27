@@ -15,9 +15,10 @@ $routes = [
   'checkout' => ['Cart', 'checkout'],
   'about' => ['Home', 'about'],
   'contact' => ['Home', 'contact'],
-
 ];
 
 $adminRoutes = [
   '^admin$' => ['Admin/Dashboard', 'index'],
+  '^admin/category' => ['Admin/Category', 'index'],
+  '^admin/category/create' => ['Admin/Category', 'create']
 ];
