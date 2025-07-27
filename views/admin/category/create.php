@@ -10,8 +10,6 @@ require './views/layouts/adminlte/header.php';
         <h3 class="card-title fw-bold">Thêm danh mục</h3>
       </div>
       <div class="card-body">
-        <!-- <a class="btn btn-primary btn-sm">Thêm sản phẩm</a> -->
-
         <form action="/admin/category/create" method="POST" enctype="multipart/form-data">
           <div class="row gx-4 gy-3">
             <?php require './views/layouts/adminlte/message.php'; ?>
