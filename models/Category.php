@@ -30,4 +30,33 @@ class Category extends BaseModel
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
+  public function getTotalCount()
+  {
+    $sql = "SELECT COUNT(*) FROM categories";
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchColumn();
+  }
+
+  public function getPaginated($page = 1, $limit = 8)
+  {
+    $offset = ($page - 1) * $limit;
+
+    $sql = "SELECT * FROM categories ORDER BY id desc LIMIT :limit OFFSET :offset";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('offset', $offset, PDO::PARAM_INT);
+    $stmt->bindParam('limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $totalCategories = $this->getTotalCount();
+    $totalPages = ceil($totalCategories / $limit);
+
+    return [
+      'items' => $categories,
+      'limit' => $limit,
+      'page' => $page,
+      'total_items' => $totalCategories,
+      'total_pages' => $totalPages,
+    ];
+  }
 }

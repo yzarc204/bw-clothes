@@ -27,10 +27,10 @@ require './views/layouts/adminlte/header.php';
             <div class="col-12">
               <label for="name" class="form-label">Tên danh mục</label>
               <input type="text" class="form-control" id="name" name="name"
-                value="<?= $_SESSION['old']['name'] ?? '' ?>" />
+                value="<?= $_SESSION['old']['name'] ?? $category['name'] ?>" />
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-primary w-100">Thêm danh mục</button>
+              <button type="submit" class="btn btn-primary w-100">Cập nhật danh mục</button>
             </div>
           </div>
         </form>

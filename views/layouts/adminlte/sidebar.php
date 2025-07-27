@@ -26,7 +26,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="/admin/category" class="nav-link">
             <i class="nav-icon bi bi-tag-fill"></i>
             <p>Quản lí danh mục</p>
           </a>
