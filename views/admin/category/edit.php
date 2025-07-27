@@ -7,10 +7,10 @@ require './views/layouts/adminlte/header.php';
   <div class="col-12">
     <div class="card card-primary card-outline">
       <div class="card-header">
-        <h3 class="card-title fw-bold">Thêm danh mục</h3>
+        <h3 class="card-title fw-bold">Cập nhật danh mục</h3>
       </div>
       <div class="card-body">
-        <form action="/admin/category/create" method="POST" enctype="multipart/form-data">
+        <form action="/admin/category/<?= $category['id'] ?>/edit" method="POST" enctype="multipart/form-data">
           <div class="row gx-4 gy-3">
             <?php if (isset($_SESSION['error'])): ?>
               <div class="col-12">
