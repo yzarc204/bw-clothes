@@ -41,18 +41,36 @@ class CategoryController
 
   public function edit($categoryId)
   {
-    $_SESSION['old'] = $_POST;
-
+    $this->validateCategoryId($categoryId);
     $categoryModel = new Category();
-
     $category = $categoryModel->getById($categoryId);
-    if (!$category) {
-      $_SESSION['error'] = 'Danh mục không tồn tại';
-      header('Location: /admin/category');
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $_SESSION['old'] = $_POST;
+      $name = $_POST['name'] ?? null;
+      $this->validate($name);
+
+      $categoryModel->update($categoryId, $name);
+
+      $_SESSION['success'] = "Cập nhật danh mục {$name} thành công";
+      unset($_SESSION['old']);
+      header("Location: /admin/category/{$categoryId}/edit");
       exit;
     }
 
     require './views/admin/category/edit.php';
+  }
+
+  public function delete($categoryId)
+  {
+    $this->validateCategoryId($categoryId);
+    $categoryModel = new Category();
+    $category = $categoryModel->getById($categoryId);
+    $categoryModel->delete($categoryId);
+
+    $_SESSION['success'] = "Xoá danh mục {$category['name']} thành công";
+    header('Location: /admin/category');
+    exit;
   }
 
   private function validate($name)
@@ -65,6 +83,18 @@ class CategoryController
     if (count($errors) > 0) {
       $_SESSION['error'] = $errors[0];
       header('Location: /admin/category/create');
+      exit;
+    }
+  }
+
+  private function validateCategoryId($categoryId)
+  {
+    $categoryModel = new Category();
+
+    $category = $categoryModel->getById($categoryId);
+    if (!$category) {
+      $_SESSION['error'] = 'Danh mục không tồn tại';
+      header('Location: /admin/category');
       exit;
     }
   }

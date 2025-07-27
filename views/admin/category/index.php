@@ -4,6 +4,8 @@ require './views/layouts/adminlte/header.php';
 ?>
 
 <div class="row g-4 py-5">
+  <?php require './views/layouts/adminlte/message.php'; ?>
+
   <div class="col-12">
     <div class="card card-primary card-outline">
       <div class="card-header">
