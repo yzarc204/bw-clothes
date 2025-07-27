@@ -12,17 +12,7 @@ require './views/layouts/adminlte/header.php';
       <div class="card-body">
         <form action="/admin/category/<?= $category['id'] ?>/edit" method="POST" enctype="multipart/form-data">
           <div class="row gx-4 gy-3">
-            <?php if (isset($_SESSION['error'])): ?>
-              <div class="col-12">
-                <div class="alert alert-danger" role="alert"><?= $_SESSION['error'] ?></div>
-              </div>
-              <?php unset($_SESSION['error']); endif; ?>
-
-            <?php if (isset($_SESSION['success'])): ?>
-              <div class="col-12">
-                <div class="alert alert-success" role="alert"><?= $_SESSION['success'] ?></div>
-              </div>
-              <?php unset($_SESSION['success']); endif; ?>
+            <?php require './views/layouts/adminlte/message.php'; ?>
 
             <div class="col-12">
               <label for="name" class="form-label">Tên danh mục</label>
