@@ -43,6 +43,7 @@ class CategoryController
   {
     $this->validateCategoryId($categoryId);
     $categoryModel = new Category();
+    $category = $categoryModel->getById($categoryId);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_SESSION['old'] = $_POST;
