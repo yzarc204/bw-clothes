@@ -7,4 +7,9 @@ class ProductController
   {
     checkAdminLogin();
   }
+
+  public function create()
+  {
+    require './views/admin/product/create.php';
+  }
 }

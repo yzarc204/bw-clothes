@@ -14,13 +14,25 @@ require './views/layouts/adminlte/header.php';
           <div class="row gx-4 gy-3">
             <?php require './views/layouts/adminlte/message.php'; ?>
 
-            <div class="col-12">
-              <label for="name" class="form-label">Tên danh mục</label>
+            <div class="col-md-4 col-sm-6">
+              <label for="name" class="form-label">Tên sản phẩm</label>
               <input type="text" class="form-control" id="name" name="name"
                 value="<?= $_SESSION['old']['name'] ?? '' ?>" />
             </div>
+
+            <div class="col-md-4 col-sm-6">
+              <label for="description" class="form-label">Mô tả sản phẩm</label>
+              <input type="text" class="form-control" id="description" name="description"
+                value="<?= $_SESSION['old']['description'] ?? '' ?>" />
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+              <label for="name" class="form-label">Hình ảnh sản phẩm</label>
+              <input type="text">
+            </div>
+
             <div class="col-12">
-              <button type="submit" class="btn btn-primary w-100">Thêm danh mục</button>
+              <button type="submit" class="btn btn-primary w-100">Thêm sản phẩm</button>
             </div>
           </div>
         </form>
