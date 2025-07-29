@@ -114,4 +114,13 @@ class Category extends BaseModel
     $stmt = $this->db->query($sql);
     return $stmt->fetchColumn();
   }
+
+  public function isset($id)
+  {
+    $sql = "SELECT COUNT(*) FROM categories WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
 }
