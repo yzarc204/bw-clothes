@@ -1,5 +1,15 @@
 <?php
 
+function debug($var)
+{
+  if (is_array($var)) {
+    print_r($var);
+  } else {
+    var_dump($var);
+  }
+  exit;
+}
+
 /**
  * Format tiền Việt Nam
  * @param float $number Số tiền cần format

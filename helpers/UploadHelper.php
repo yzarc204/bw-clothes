@@ -15,7 +15,7 @@ function upload(array $file, string $uploadDir, ?string $uploadFileName = null):
     return null;
   }
 
-  $uploadPath = 'uploads/' . trim($uploadDir, '/') . '/';
+  $uploadPath = 'uploads/' . ($uploadDir ? (trim($uploadDir, '/') . '/') : '');
 
   // Tạo tên file nếu không được cung cấp
   $filename = $uploadFileName;
@@ -31,7 +31,7 @@ function upload(array $file, string $uploadDir, ?string $uploadFileName = null):
 
   // Tạo thư mục nếu chưa tồn tại
   if (!is_dir($uploadPath)) {
-    mkdir($uploadPath, 0755, true);
+    mkdir($uploadPath, 0777, true);
   }
 
   // Kiểm tra và di chuyển file
@@ -44,4 +44,61 @@ function upload(array $file, string $uploadDir, ?string $uploadFileName = null):
   }
 
   return $fullPath;
+}
+
+/**
+ * Upload nhiều file vào thư mục chỉ định
+ *
+ * @param array $files Mảng $_FILES chứa thông tin các file upload (mặc định là $_FILES['images'])
+ * @param string $uploadDir Thư mục con trong 'uploads/' để lưu file
+ * @return array Mảng các đường dẫn đầy đủ của các file upload thành công
+ */
+function uploadMultipleFiles(array $files = null, string $uploadDir): array
+{
+  // Sử dụng $_FILES['images'] nếu không truyền $files
+  $files = $files ?? $_FILES['images'] ?? [];
+
+  // Kiểm tra xem có file nào được gửi hay không
+  if (!isset($files['name']) || empty($files['name'][0])) {
+    throw new InvalidArgumentException('Không có file nào được đính kèm.');
+  }
+
+  $uploadPath = 'uploads/' . ($uploadDir ? (trim($uploadDir, '/') . '/') : '');
+  $uploadedFiles = [];
+
+  // Tạo thư mục nếu chưa tồn tại
+  if (!is_dir($uploadPath) && !mkdir($uploadPath, 0755, true)) {
+    throw new InvalidArgumentException('Không thể tạo thư mục lưu trữ: ' . $uploadPath);
+  }
+
+  // Xử lý từng file
+  foreach ($files['name'] as $index => $name) {
+    // Kiểm tra lỗi upload
+    if ($files['error'][$index] !== UPLOAD_ERR_OK) {
+      continue; // Bỏ qua file lỗi
+    }
+
+    // Tạo tên file duy nhất
+    $fileBaseName = pathinfo($name, PATHINFO_FILENAME);
+    $fileBaseName = preg_replace('/[^a-zA-Z0-9_-]/', '', $fileBaseName); // Làm sạch tên file
+    $fileExtension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    $filename = $fileBaseName . '-' . time() . '-' . uniqid() . '.' . $fileExtension;
+    $fullPath = $uploadPath . $filename;
+
+    // Kiểm tra và di chuyển file
+    if (!is_uploaded_file($files['tmp_name'][$index])) {
+      continue;
+    }
+
+    if (move_uploaded_file($files['tmp_name'][$index], $fullPath)) {
+      $uploadedFiles[] = $fullPath;
+    }
+  }
+
+  // Kiểm tra xem có file nào được upload thành công không
+  if (empty($uploadedFiles)) {
+    throw new InvalidArgumentException('Không có file nào được upload thành công.');
+  }
+
+  return $uploadedFiles;
 }

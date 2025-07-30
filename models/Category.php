@@ -122,5 +122,6 @@ class Category extends BaseModel
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchColumn();
+    ;
   }
 }
