@@ -15,7 +15,9 @@ class ProductController
 
   public function index()
   {
-
+    $productModel = new Product();
+    $products = $productModel->getProductDetailPaginated();
+    debug($products);
   }
 
   public function create()

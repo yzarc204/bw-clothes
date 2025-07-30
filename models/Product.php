@@ -172,6 +172,15 @@ class Product extends BaseModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  public function isset($id)
+  {
+    $sql = "SELECT COUNT(*) FROM products WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
+
   public function getProductDetailById($id)
   {
     $sql = "SELECT p.*, c.* FROM products p
@@ -183,12 +192,32 @@ class Product extends BaseModel
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
-  public function isset($id)
+
+  public function getProductDetailPaginated($page = 1, $limit = 8)
   {
-    $sql = "SELECT COUNT(*) FROM products WHERE id = :id";
-    $stmt = $this->db->prepare($sql);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $offset = ($page >= 1) ? ($page - 1) * $limit : 0;
+
+    $totalProducts = $this->getTotalCount();
+    $totalPages = ceil($totalProducts / $limit);
+
+    $sql = "SELECT p.*, c.* FROM products p
+            INNER JOIN categories c 
+            ON c.id = p.category_id
+            LIMIT :limit
+            OFFSET :offset
+            ORDER BY p.id DESC";
+    $stmt = $this->db->query($sql);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
-    return $stmt->fetchColumn();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return [
+      'items' => $products,
+      'total_pages' => $totalPages,
+      'total_items' => $totalProducts,
+      'limit' => $limit,
+      'page' => $page
+    ];
   }
 }

@@ -19,9 +19,10 @@ $routes = [
 
 $adminRoutes = [
   '^admin$' => ['Admin/Dashboard', 'index'],
-  '^admin/category' => ['Admin/Category', 'index'],
-  '^admin/category/create' => ['Admin/Category', 'create'],
-  '^admin/category/(\d+)/edit' => ['Admin/Category', 'edit'],
-  '^admin/category/(\d+)/delete' => ['Admin/Category', 'delete'],
-  '^admin/product/create' => ['Admin/Product', 'create'],
+  '^admin/category$' => ['Admin/Category', 'index'],
+  '^admin/category/create$' => ['Admin/Category', 'create'],
+  '^admin/category/(\d+)/edit$' => ['Admin/Category', 'edit'],
+  '^admin/category/(\d+)/delete$' => ['Admin/Category', 'delete'],
+  '^admin/product$' => ['Admin/Product', 'index'],
+  '^admin/product/create$' => ['Admin/Product', 'create'],
 ];
