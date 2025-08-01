@@ -35,6 +35,14 @@ class Product extends BaseModel
     return $stmt->execute();
   }
 
+  public function delete($id)
+  {
+    $sql = "DELETE FROM products WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
+
   public function getPaginated($page = 1, $limit = 8)
   {
     $totalProducts = $this->getTotalCount();

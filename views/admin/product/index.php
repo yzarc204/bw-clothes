@@ -34,7 +34,7 @@ require './views/layouts/adminlte/header.php';
                 <td>
                   <a href="/admin/product/<?= $product['product_id'] ?>/edit" class="btn btn-primary btn-sm">Sửa</a>
                   <a href="/admin/product/<?= $product['product_id'] ?>/delete" class="btn btn-danger btn-sm"
-                    onclick="return confirm('Bạn có chắc chắn muốn xoá danh mục này?');">Xoá</a>
+                    onclick="return confirm('Bạn có chắc chắn muốn xoá sản phẩm này?');">Xoá</a>
                 </td>
               </tr>
             <?php endforeach; ?>

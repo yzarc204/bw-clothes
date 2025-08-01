@@ -26,4 +26,5 @@ $adminRoutes = [
   '^admin/product$' => ['Admin/Product', 'index'],
   '^admin/product/create$' => ['Admin/Product', 'create'],
   '^admin/product/(\d+)/edit$' => ['Admin/Product', 'edit'],
+  '^admin/product/(\d+)/delete$' => ['Admin/Product', 'delete'],
 ];

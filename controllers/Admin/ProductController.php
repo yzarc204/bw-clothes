@@ -121,6 +121,14 @@ class ProductController
   public function delete($productId)
   {
     $this->validateProductId($productId);
+
+    $productModel = new Product();
+    $product = $productModel->getById($productId);
+    $productModel->delete($productId);
+
+    $_SESSION['success'] = "Xoá sản phẩm {$product['name']} thành công";
+    header('Location: /admin/product');
+    exit;
   }
 
   private function validate($name, $categoryId, $description, $featuredImage, $images, $editMode = false)
