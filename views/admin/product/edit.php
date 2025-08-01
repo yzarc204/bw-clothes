@@ -8,7 +8,7 @@
         <h3 class="card-title fw-bold">Sửa sản phẩm</h3>
       </div>
       <div class="card-body">
-        <form action="/admin/product/create" method="POST" enctype="multipart/form-data">
+        <form action="/admin/product/<?= $product['id'] ?>/edit" method="POST" enctype="multipart/form-data">
           <div class="row gx-4 gy-3">
             <?php require './views/layouts/adminlte/message.php'; ?>
 
@@ -23,7 +23,7 @@
               <select class="form-control" id="category_id" name="category_id">
                 <option value="">Không chọn danh mục</option>
                 <?php foreach ($categories as $category): ?>
-                  <option value="<?= htmlspecialchars($category['id']) ?>" <?= (($_SESSION['old']['category_id'] ?? '') == $category['id']) ? 'selected' : '' ?>>
+                  <option value="<?= htmlspecialchars($category['id']) ?>" <?= (($_SESSION['old']['category_id'] ?? '') == $category['id'] || $product['category_id'] == $category['id']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($category['name']) ?>
                   </option>
                 <?php endforeach; ?>
@@ -51,7 +51,7 @@
             </div>
 
             <div class="col-12">
-              <button type="submit" class="btn btn-primary w-100">Thêm sản phẩm</button>
+              <button type="submit" class="btn btn-primary w-100">Cập nhật sản phẩm</button>
             </div>
           </div>
         </form>

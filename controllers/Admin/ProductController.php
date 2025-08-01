@@ -71,6 +71,7 @@ class ProductController
 
     $productModel = new Product();
     $productImageModel = new ProductImage();
+    $categoryModel = new Category();
 
     $product = $productModel->getById($productId);
 
@@ -113,7 +114,13 @@ class ProductController
       exit;
     }
 
+    $categories = $categoryModel->getAll();
     require './views/admin/product/edit.php';
+  }
+
+  public function delete($productId)
+  {
+    $this->validateProductId($productId);
   }
 
   private function validate($name, $categoryId, $description, $featuredImage, $images, $editMode = false)
