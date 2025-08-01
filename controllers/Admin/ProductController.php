@@ -17,7 +17,7 @@ class ProductController
   {
     $productModel = new Product();
     $products = $productModel->getProductDetailPaginated();
-    debug($products);
+    require './views/admin/product/index.php';
   }
 
   public function create()
@@ -32,17 +32,22 @@ class ProductController
       $name = isset($_POST['name']) ? trim($_POST['name']) : null;
       $categoryId = isset($_POST['category_id']) ? ($_POST['category_id'] ?? null) : null;
       $description = isset($_POST['description']) ? $_POST['description'] : null;
+      $featuredImage = isset($_FILES['featured_image']) ? $_FILES['featured_image'] : null;
       $images = isset($_FILES['images']) ? $_FILES['images'] : [];
 
-      $errors = $this->validate($name, $categoryId, $description, $images);
+      $errors = $this->validate($name, $categoryId, $description, $featuredImage, $images);
       if (count($errors)) {
         $_SESSION['error'] = $errors[0];
         header('Location: /admin/product/create');
         exit;
       }
 
-      $images = $this->uploadImages($images);
-      $featuredImage = array_shift($images);
+      $featuredImage = upload($featuredImage, 'products');
+      if (count(array_filter($images['name'])) > 0) {
+        $images = uploadMultipleFiles($images, 'products');
+      } else {
+        $images = [];
+      }
 
       $productId = $productModel->create($name, $categoryId, $description, $featuredImage);
       foreach ($images as $image) {
@@ -60,18 +65,58 @@ class ProductController
     require './views/admin/product/create.php';
   }
 
-  public function edit($categoryId)
+  public function edit($productId)
   {
-    $this->validateProductId($categoryId);
+    $this->validateProductId($productId);
+
+    $productModel = new Product();
+    $productImageModel = new ProductImage();
+
+    $product = $productModel->getById($productId);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $_SESSION['old'] = $_POST;
 
+      $name = isset($_POST['name']) ? trim($_POST['name']) : null;
+      $categoryId = isset($_POST['category_id']) ? ($_POST['category_id'] ?? null) : null;
+      $description = isset($_POST['description']) ? $_POST['description'] : null;
+      $featuredImage = isset($_FILES['featured_image']) ? $_FILES['featured_image'] : null;
+      $images = isset($_FILES['images']) ? $_FILES['images'] : [];
+
+      $errors = $this->validate($name, $categoryId, $description, $featuredImage, $images, true);
+      if (count($errors)) {
+        $_SESSION['error'] = $errors[0];
+        header("Location: /admin/category/{$categoryId}/edit");
+        exit;
+      }
+
+      if (!empty($featuredImage['name'])) {
+        $featuredImage = upload($featuredImage, 'products');
+      } else {
+        $featuredImage = $product['featured_image'];
+      }
+      if (!empty($images['name'][0])) {
+        $images = uploadMultipleFiles($images, 'products');
+      } else {
+        $images = [];
+      }
+
+      $productModel->update($productId, $name, $categoryId, $description, $featuredImage);
+      foreach ($images as $image) {
+        $productImageModel->create($productId, $image);
+      }
+
+      $_SESSION['success'] = "Cập nhật sản phẩm {$product['name']} thành công";
+      unset($_SESSION['error']);
+      unset($_SESSION['old']);
+      header("Location: /admin/product/{$productId}/edit");
+      exit;
     }
 
-    // require './views/admin/product/index.php'
+    require './views/admin/product/edit.php';
   }
 
-  private function validate($name, $categoryId, $description, $images)
+  private function validate($name, $categoryId, $description, $featuredImage, $images, $editMode = false)
   {
     $errors = [];
 
@@ -87,18 +132,23 @@ class ProductController
       $errors[] = 'Danh mục không tồn tại';
     }
 
-    if (!isset($images['name']) || empty($images['name'][0])) {
-      $errors[] = 'Vui lòng đính kèm ít nhất một ảnh';
-    } else {
-      $hasValidFile = false;
-      foreach ($images['error'] as $error) {
-        if ($error === UPLOAD_ERR_OK) {
-          $hasValidFile = true;
-          break;
-        }
+    $isFeaturedImageUploaded = !empty($featuredImage['name']);
+    if (!$isFeaturedImageUploaded && !$editMode) {
+      $errors[] = 'Vui lòng tải lên ảnh đại diện của sản phẩm';
+    } else if ($isFeaturedImageUploaded) {
+      $extension = strtolower(pathinfo($featuredImage['name'], PATHINFO_EXTENSION));
+      if (!in_array($extension, ALLOWED_IMAGE_EXTENSIONS)) {
+        $errors[] = 'Ảnh đại diện chỉ chấp nhận các format: ' . implode(', ', ALLOWED_IMAGE_EXTENSIONS);
       }
-      if (!$hasValidFile) {
-        $errors[] = 'Không có ảnh hợp lệ được đính kèm';
+    }
+
+    $hasImages = !empty($images['name'][0]);
+    if ($hasImages) {
+      foreach ($images['name'] as $index => $imageName) {
+        $extension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+        if (!in_array($extension, ALLOWED_IMAGE_EXTENSIONS)) {
+          $errors[] = 'Ảnh sản phẩm chỉ chấp nhận các format: ' . implode(', ', array: ALLOWED_IMAGE_EXTENSIONS);
+        }
       }
     }
 
@@ -113,11 +163,5 @@ class ProductController
       header('Location: /admin/product');
       exit;
     }
-  }
-
-  private function uploadImages($images)
-  {
-    $uploads = uploadMultipleFiles($images, '');
-    return $uploads;
   }
 }

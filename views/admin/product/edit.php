@@ -5,7 +5,7 @@
   <div class="col-12">
     <div class="card card-primary card-outline">
       <div class="card-header">
-        <h3 class="card-title fw-bold">Thêm sản phẩm</h3>
+        <h3 class="card-title fw-bold">Sửa sản phẩm</h3>
       </div>
       <div class="card-body">
         <form action="/admin/product/create" method="POST" enctype="multipart/form-data">
@@ -15,7 +15,7 @@
             <div class="col-md-6 col-12">
               <label for="name" class="form-label">Tên sản phẩm</label>
               <input type="text" class="form-control" id="name" name="name"
-                value="<?= htmlspecialchars($_SESSION['old']['name'] ?? '') ?>" />
+                value="<?= htmlspecialchars($_SESSION['old']['name'] ?? $product['name'] ?? '') ?>" />
             </div>
 
             <div class="col-md-6 col-12">

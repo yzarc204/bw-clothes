@@ -17,6 +17,24 @@ class Product extends BaseModel
     return (int) $this->db->lastInsertId();
   }
 
+  public function update($id, $name, $categoryId, $description, $featuredImage)
+  {
+    $sql = "UPDATE products SET 
+            name = :name, 
+            category_id = :category_id, 
+            description = :description, 
+            featured_image = :featured_image, 
+            rating = 0
+            WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('name', $name, PDO::PARAM_STR);
+    $stmt->bindParam('category_id', $categoryId, PDO::PARAM_INT);
+    $stmt->bindParam('description', $description, PDO::PARAM_STR);
+    $stmt->bindParam('featured_image', $featuredImage, PDO::PARAM_STR);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
+
   public function getPaginated($page = 1, $limit = 8)
   {
     $totalProducts = $this->getTotalCount();
@@ -31,8 +49,8 @@ class Product extends BaseModel
                 ORDER BY id DESC
                 LIMIT :limit OFFSET :offset";
     $stmt = $this->db->prepare($sql);
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindParam('limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam('offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -200,13 +218,18 @@ class Product extends BaseModel
     $totalProducts = $this->getTotalCount();
     $totalPages = ceil($totalProducts / $limit);
 
-    $sql = "SELECT p.*, c.* FROM products p
+    $sql = "SELECT p.*, c.*,
+            p.id as product_id, 
+            p.name as product_name,
+            c.id as category_id,
+            c.name as category_name
+            FROM products p
             INNER JOIN categories c 
             ON c.id = p.category_id
+            ORDER BY p.id DESC
             LIMIT :limit
-            OFFSET :offset
-            ORDER BY p.id DESC";
-    $stmt = $this->db->query($sql);
+            OFFSET :offset";
+    $stmt = $this->db->prepare($sql);
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
