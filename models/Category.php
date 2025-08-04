@@ -13,9 +13,8 @@ class Category extends BaseModel
   {
     $sql = "INSERT INTO categories (name) VALUES (:name)";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([
-      'name' => $name
-    ]);
+    $stmt->bindParam('name', $name, PDO::PARAM_STR);
+    $stmt->execute();
     return $this->db->lastInsertId();
   }
 
@@ -29,10 +28,9 @@ class Category extends BaseModel
   {
     $sql = "UPDATE categories SET name = :name WHERE id = :id";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([
-      'name' => $name,
-      'id' => $id
-    ]);
+    $stmt->bindParam('name', $name, PDO::PARAM_STR);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
   }
 
   /**
@@ -44,9 +42,8 @@ class Category extends BaseModel
   {
     $sql = "DELETE FROM categories WHERE id = :id";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([
-      'id' => $id
-    ]);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
   }
 
   /**
@@ -71,9 +68,8 @@ class Category extends BaseModel
   {
     $sql = "SELECT * FROM categories WHERE id = :id";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([
-      'id' => $id
-    ]);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
@@ -86,14 +82,13 @@ class Category extends BaseModel
    */
   public function getPaginated($page = 1, $limit = 8)
   {
-    $offset = ($page - 1) * $limit;
+    $offset = ($page > 0) ? ($page - 1) * $limit : 0;
 
     $sql = "SELECT * FROM categories ORDER BY id DESC LIMIT :limit OFFSET :offset";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
+    $stmt->bindParam('limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam('offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $totalCategories = $this->getTotalCount();
@@ -118,5 +113,15 @@ class Category extends BaseModel
     $sql = "SELECT COUNT(*) FROM categories";
     $stmt = $this->db->query($sql);
     return $stmt->fetchColumn();
+  }
+
+  public function isset($id)
+  {
+    $sql = "SELECT COUNT(*) FROM categories WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+    ;
   }
 }

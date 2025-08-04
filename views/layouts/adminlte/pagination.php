@@ -6,7 +6,11 @@
   <?php endif; ?>
 
   <?php foreach ($urls as $url): ?>
-    <li class="page-item"><a class="page-link" href="<?= $url['url'] ?>"><?= $url['page'] ?></a></li>
+    <?php if ($url['page'] == $pagination['page']): ?>
+      <li class="page-item"><span class="page-link disabled"><?= $url['page'] ?></span></li>
+    <?php else: ?>
+      <li class="page-item"><a class="page-link" href="<?= $url['url'] ?>"><?= $url['page'] ?></a></li>
+    <?php endif; ?>
   <?php endforeach; ?>
 
   <?php if (!$onLastPage): ?>

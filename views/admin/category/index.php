@@ -12,6 +12,8 @@ require './views/layouts/adminlte/header.php';
         <h3 class="card-title fw-bold">Quản lí danh mục</h3>
       </div>
       <div class="card-body">
+        <a class="btn btn-primary btn-sm mb-3" href="/admin/category/create">Thêm sản phẩm</a>
+
         <table class="table table-hover table-bordered">
           <thead>
             <tr>
@@ -27,6 +29,8 @@ require './views/layouts/adminlte/header.php';
                 <td><?= $category['name'] ?></td>
                 <td>
                   <a href="/admin/category/<?= $category['id'] ?>/edit" class="btn btn-primary btn-sm">Sửa</a>
+                  <a href="/admin/category/<?= $category['id'] ?>/delete" class="btn btn-danger btn-sm"
+                    onclick="return confirm('Bạn có chắc chắn muốn xoá danh mục này?');">Xoá</a>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -34,7 +38,7 @@ require './views/layouts/adminlte/header.php';
         </table>
       </div>
       <div class="card-footer">
-        <?php adminltePagination($categories, '/admin/category'); ?>
+        <?php adminltePagination($categories); ?>
       </div>
     </div>
   </div>

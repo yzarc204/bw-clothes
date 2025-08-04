@@ -2,7 +2,7 @@
   <!--begin::Sidebar Brand-->
   <div class="sidebar-brand">
     <!--begin::Brand Link-->
-    <a href="../index.html" class="brand-link">
+    <a href="/admin" class="brand-link">
       <!--begin::Brand Image-->
       <img src="assets/adminlte/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
       <!--end::Brand Image-->
@@ -20,7 +20,7 @@
       <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation"
         data-accordion="false" id="navigation">
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="/admin/product" class="nav-link">
             <i class="nav-icon bi bi-archive-fill"></i>
             <p>Quản lí sản phẩm</p>
           </a>
@@ -29,6 +29,12 @@
           <a href="/admin/category" class="nav-link">
             <i class="nav-icon bi bi-tag-fill"></i>
             <p>Quản lí danh mục</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/attribute" class="nav-link">
+            <i class="nav-icon bi bi-palette2"></i>
+            <p>Thuộc tính biến thể</p>
           </a>
         </li>
       </ul>

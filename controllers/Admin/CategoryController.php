@@ -7,7 +7,7 @@ class CategoryController
 {
   public function __construct()
   {
-    checkAdminLogin(); // Kiểm tra đăng nhập admin
+    checkAdminLogin();
   }
 
   public function index()
