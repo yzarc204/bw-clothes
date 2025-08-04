@@ -115,6 +115,7 @@ class ProductController
     }
 
     $categories = $categoryModel->getAll();
+    $images = $productImageModel->getByProductId($productId);
     require './views/admin/product/edit.php';
   }
 
@@ -129,6 +130,14 @@ class ProductController
     $_SESSION['success'] = "Xoá sản phẩm {$product['name']} thành công";
     header('Location: /admin/product');
     exit;
+  }
+
+  public function deleteProductImage($imageId)
+  {
+    $productImageModel = new ProductImage();
+    $productImage = $productImageModel->getById($imageId);
+    $productImageModel->delete($imageId);
+    header("Location: /admin/product/{$productImage['product_id']}/edit");
   }
 
   private function validate($name, $categoryId, $description, $featuredImage, $images, $editMode = false)

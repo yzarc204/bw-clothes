@@ -15,7 +15,7 @@
             <div class="col-md-6 col-12">
               <label for="name" class="form-label">Tên sản phẩm</label>
               <input type="text" class="form-control" id="name" name="name"
-                value="<?= htmlspecialchars($_SESSION['old']['name'] ?? $product['name'] ?? '') ?>" />
+                value="<?= $_SESSION['old']['name'] ?? $product['name'] ?? '' ?>" />
             </div>
 
             <div class="col-md-6 col-12">
@@ -23,8 +23,8 @@
               <select class="form-control" id="category_id" name="category_id">
                 <option value="">Không chọn danh mục</option>
                 <?php foreach ($categories as $category): ?>
-                  <option value="<?= htmlspecialchars($category['id']) ?>" <?= (($_SESSION['old']['category_id'] ?? '') == $category['id'] || $product['category_id'] == $category['id']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($category['name']) ?>
+                  <option value="<?= $category['id'] ?>" <?= (($_SESSION['old']['category_id'] ?? $product['category_id']) == $category['id']) ? 'selected' : '' ?>>
+                    <?= $category['name'] ?>
                   </option>
                 <?php endforeach; ?>
               </select>
@@ -33,21 +33,54 @@
             <div class="col-md-6 col-12">
               <label for="featured_image" class="form-label">Ảnh đại diện</label>
               <input type="file" class="form-control" id="featured_image" name="featured_image" accept="image/*">
-              <div class="mt-2 d-flex flex-column align-items-center" id="featured_previews_container">
-                <img class="d-none" id="featured_previews" style="height: 100px; object-fit: cover;" />
+              <div class="row gx-3 gy-3 mt-2">
+                <!-- Ảnh đại diện hiện tại -->
+                <div class="col-md-6">
+                  <p class="fw-bold">Ảnh hiện tại</p>
+                  <div class="d-flex flex-column align-items-center">
+                    <img src="<?= $product['featured_image'] ?>" alt="Ảnh đại diện"
+                      style="height: 100px; width: auto; object-fit: cover;">
+                  </div>
+                </div>
+                <!-- Ảnh đại diện mới -->
+                <div class="col-md-6">
+                  <p class="fw-bold">Ảnh mới</p>
+                  <div class="d-flex flex-column align-items-center" id="new_featured_previews"></div>
+                </div>
               </div>
             </div>
 
             <div class="col-md-6 col-12">
               <label for="images" class="form-label">Các ảnh khác</label>
               <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*">
-              <div class="row gx-3 gy-3 mt-2" id="previews"></div>
+              <div class="row gx-3 gy-3 mt-2">
+                <!-- Ảnh đã thêm -->
+                <div class="col-md-6">
+                  <p class="fw-bold">Ảnh đã thêm</p>
+                  <div class="row gx-3 gy-3" id="existing_images">
+                    <?php foreach ($images as $image): ?>
+                      <div class="col-auto d-flex flex-column align-items-center">
+                        <img src="<?= $image['image_url'] ?>" alt="Product image"
+                          style="height: 100px; width: auto; object-fit: cover;">
+                        <a onclick="return confirm('Bạn có chắc chắn muốn xoá ảnh này?');"
+                          class="btn btn-warning btn-sm mt-2"
+                          href="/admin/product-image/<?= $image['id'] ?>/delete">Xoá</a>
+                      </div>
+                    <?php endforeach; ?>
+                  </div>
+                </div>
+                <!-- Ảnh thêm mới -->
+                <div class="col-md-6">
+                  <p class="fw-bold">Ảnh thêm mới</p>
+                  <div class="row gx-3 gy-3" id="new_images_previews"></div>
+                </div>
+              </div>
             </div>
 
             <div class="col-12">
               <label for="description" class="form-label">Mô tả sản phẩm</label>
               <textarea class="form-control" id="description"
-                name="description"><?= htmlspecialchars($_SESSION['old']['description'] ?? '') ?></textarea>
+                name="description"><?= $_SESSION['old']['description'] ?? $product['description'] ?? '' ?></textarea>
             </div>
 
             <div class="col-12">
@@ -64,23 +97,27 @@
 <script type="text/javascript" src="/vendors/jquery.min.js"></script>
 <script type="text/javascript">
   const $featuredImage = $('#featured_image');
-  const $featuredPreviews = $('#featured_previews');
-  const $featuredPreviewsContainer = $('#featured_previews_container');
+  const $newFeaturedPreviews = $('#new_featured_previews');
   const $imagesInput = $('#images');
-  const $previews = $('#previews');
+  const $newImagesPreviews = $('#new_images_previews');
   let selectedFeaturedFile = null; // Lưu file ảnh đại diện
-  let selectedFiles = []; // Mảng lưu file các ảnh khác
+  let selectedFiles = []; // Mảng lưu file các ảnh mới
 
-  // Xử lý ảnh đại diện
+  // Xử lý ảnh đại diện mới
   $featuredImage.on('change', function () {
-    $featuredPreviewsContainer.empty();
-    $featuredPreviews.addClass('d-none');
+    $newFeaturedPreviews.empty();
     selectedFeaturedFile = this.files[0];
 
     if (!selectedFeaturedFile) return;
 
     const blob = URL.createObjectURL(selectedFeaturedFile);
-    $featuredPreviews.attr('src', blob).removeClass('d-none');
+    const $img = $('<img>', {
+      src: blob,
+      css: { height: '100px', width: 'auto', objectFit: 'cover' },
+      on: {
+        load: () => URL.revokeObjectURL(blob) // Giải phóng bộ nhớ
+      }
+    });
 
     const $removeBtn = $('<button>', {
       text: 'Xóa',
@@ -88,30 +125,33 @@
       click: removeFeaturedFile
     });
 
-    $featuredPreviewsContainer.append($featuredPreviews, $removeBtn);
-    $featuredPreviews.one('load', () => URL.revokeObjectURL(blob)); // Giải phóng bộ nhớ
+    const $container = $('<div>', {
+      class: 'd-flex flex-column align-items-center'
+    }).append($img, $removeBtn);
+
+    $newFeaturedPreviews.append($container);
   });
 
-  // Xóa ảnh đại diện
+  // Xóa ảnh đại diện mới
   function removeFeaturedFile() {
     selectedFeaturedFile = null;
     $featuredImage.val(''); // Reset input file
-    $featuredPreviewsContainer.empty();
-    $featuredPreviews.addClass('d-none');
+    $newFeaturedPreviews.empty();
   }
 
-  // Xử lý các ảnh khác
+  // Xử lý ảnh mới
   $imagesInput.on('change', function () {
     const newFiles = Array.from(this.files);
     if (!newFiles.length) return;
 
     selectedFiles = selectedFiles.concat(newFiles);
-    updatePreviews();
+    updateNewImagesPreviews();
     updateInputFiles();
   });
 
-  function updatePreviews() {
-    $previews.empty();
+  // Cập nhật preview ảnh mới
+  function updateNewImagesPreviews() {
+    $newImagesPreviews.empty();
 
     selectedFiles.forEach((file, index) => {
       const blob = URL.createObjectURL(file);
@@ -133,16 +173,18 @@
         class: 'col-auto d-flex flex-column align-items-center'
       }).append($img, $removeBtn);
 
-      $previews.append($container);
+      $newImagesPreviews.append($container);
     });
   }
 
+  // Xóa ảnh mới
   function removeFile(index) {
     selectedFiles.splice(index, 1);
-    updatePreviews();
+    updateNewImagesPreviews();
     updateInputFiles();
   }
 
+  // Cập nhật input files
   function updateInputFiles() {
     const dt = new DataTransfer();
     selectedFiles.forEach(file => dt.items.add(file));
