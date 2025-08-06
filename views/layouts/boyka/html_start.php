@@ -18,16 +18,16 @@ $user = getCurrentUser();
   <!-- CSS ========================= -->
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/boyka/css/bootstrap.min.css" />
 
   <!-- Font CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/qassets/boyka/css/font-awesome.min.css" />
 
   <!-- Plugins CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/plugins.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/boyka/css/plugins.css" />
 
   <!-- Main Style CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/style.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/boyka/css/style.css" />
 
   <!-- Modernizer JS -->
-  <script src="assets/boyka/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/boyka/js/vendor/modernizr-2.8.3.min.js"></script>

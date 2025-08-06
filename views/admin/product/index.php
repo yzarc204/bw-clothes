@@ -27,13 +27,17 @@ require './views/layouts/adminlte/header.php';
           <tbody>
             <?php foreach ($products['items'] as $product): ?>
               <tr class="align-middle">
-                <td><?= $product['product_id'] ?></td>
-                <td><img src="<?= $product['featured_image'] ?>" height="100" /></td>
-                <td><?= $product['product_name'] ?></td>
+                <td><?= $product['id'] ?></td>
+                <td><img src="<?= BASE_URL . '/' . $product['featured_image'] ?>" height="100" /></td>
+                <td><?= $product['name'] ?></td>
                 <td><?= $product['category_name'] ?></td>
                 <td>
-                  <a href="/admin/product/<?= $product['product_id'] ?>/edit" class="btn btn-primary btn-sm">Sửa</a>
-                  <a href="/admin/product/<?= $product['product_id'] ?>/delete" class="btn btn-danger btn-sm"
+                  <a href="/admin/product/<?= $product['id'] ?>" class="btn btn-secondary btn-sm">Chi
+                    tiết</a>
+                  <a href="/admin/product/<?= $product['id'] ?>/edit" class="btn btn-primary btn-sm">Sửa</a>
+                  <a href="/admin/product/<?= $product['id'] ?>/variant" class="btn btn-success btn-sm">Biến
+                    thể</a>
+                  <a href="/admin/product/<?= $product['id'] ?>/delete" class="btn btn-danger btn-sm"
                     onclick="return confirm('Bạn có chắc chắn muốn xoá sản phẩm này?');">Xoá</a>
                 </td>
               </tr>
@@ -46,7 +50,6 @@ require './views/layouts/adminlte/header.php';
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <?php

@@ -38,7 +38,7 @@
                 <div class="col-md-6">
                   <p class="fw-bold">Ảnh hiện tại</p>
                   <div class="d-flex flex-column align-items-center">
-                    <img src="<?= $product['featured_image'] ?>" alt="Ảnh đại diện"
+                    <img src="<?= BASE_URL . '/' . $product['featured_image'] ?>" alt="Ảnh đại diện"
                       style="height: 100px; width: auto; object-fit: cover;">
                   </div>
                 </div>
@@ -60,7 +60,7 @@
                   <div class="row gx-3 gy-3" id="existing_images">
                     <?php foreach ($images as $image): ?>
                       <div class="col-auto d-flex flex-column align-items-center">
-                        <img src="<?= $image['image_url'] ?>" alt="Product image"
+                        <img src="<?= BASE_URL . '/' . $image['image_url'] ?>" alt="Product image"
                           style="height: 100px; width: auto; object-fit: cover;">
                         <a onclick="return confirm('Bạn có chắc chắn muốn xoá ảnh này?');"
                           class="btn btn-warning btn-sm mt-2"
@@ -94,6 +94,7 @@
 </div>
 
 <?php require './views/layouts/adminlte/footer.php'; ?>
+
 <script type="text/javascript" src="/vendors/jquery.min.js"></script>
 <script type="text/javascript">
   const $featuredImage = $('#featured_image');

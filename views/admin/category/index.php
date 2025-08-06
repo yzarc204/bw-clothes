@@ -12,7 +12,7 @@ require './views/layouts/adminlte/header.php';
         <h3 class="card-title fw-bold">Quản lí danh mục</h3>
       </div>
       <div class="card-body">
-        <a class="btn btn-primary btn-sm mb-3" href="/admin/category/create">Thêm sản phẩm</a>
+        <a class="btn btn-primary btn-sm mb-3" href="/admin/category/create">Thêm danh mục</a>
 
         <table class="table table-hover table-bordered">
           <thead>
@@ -42,7 +42,6 @@ require './views/layouts/adminlte/header.php';
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <?php

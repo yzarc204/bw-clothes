@@ -7,7 +7,6 @@ $user = getCurrentUser();
 <!--begin::Head-->
 
 <head>
-  <base href="/">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>AdminLTE 4 | Fixed Sidebar</title>
   <!--begin::Accessibility Meta Tags-->
@@ -43,5 +42,5 @@ $user = getCurrentUser();
     crossorigin="anonymous" />
   <!--end::Third Party Plugin(Bootstrap Icons)-->
   <!--begin::Required Plugin(AdminLTE)-->
-  <link rel="stylesheet" href="assets/adminlte/css/adminlte.min.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/adminlte/css/adminlte.min.css" />
   <!--end::Required Plugin(AdminLTE)-->

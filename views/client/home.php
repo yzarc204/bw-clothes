@@ -26,7 +26,8 @@ require './views/layouts/boyka/header.php';
             <?php for ($i = 1; $i <= 3; $i++): ?>
                 <div class="col-lg-4 col-md-4">
                     <div class="single-banner mt--30">
-                        <a href="shop.html"><img src="assets/boyka/images/banner/<?= $i ?>.jpg" alt="Banner <?= $i ?>"></a>
+                        <a href="shop.html"><img src="<?= BASE_URL ?>/assets/boyka/images/banner/<?= $i ?>.jpg"
+                                alt="Banner <?= $i ?>"></a>
                     </div>
                 </div>
             <?php endfor; ?>
@@ -53,12 +54,13 @@ require './views/layouts/boyka/header.php';
                         <div class="product-image">
                             <a href="/product/<?= $product['id'] ?>"><img src="<?= $product['image'] ?>" alt=""></a>
                             <?php if ($product['sale_price']): ?>
-                            <?php $discount = round(($product['price'] - $product['sale_price']) / $product['price'] * 100); ?>
-                            <span class="label-product label-new">SALE</span>
-                            <span class="label-product label-sale">-<?= $discount ?>%</span>
+                                <?php $discount = round(($product['price'] - $product['sale_price']) / $product['price'] * 100); ?>
+                                <span class="label-product label-new">SALE</span>
+                                <span class="label-product label-sale">-<?= $discount ?>%</span>
                             <?php endif; ?>
                             <div class="quick_view">
-                                <a href="#" title="quick view" class="quick-view-btn" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="fa fa-search"></i></a>
+                                <a href="#" title="quick view" class="quick-view-btn" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModalCenter"><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="product-content">
@@ -94,10 +96,8 @@ require './views/layouts/boyka/header.php';
             <?php foreach ($categories as $category): ?>
                 <div>
                     <div class="categories-list-post-item text-center">
-                        <img
-                            src="<?= htmlspecialchars($category['image']) ?>"
-                            alt="<?= htmlspecialchars($category['name']) ?>"
-                            class="img-fluid"
+                        <img src="<?= htmlspecialchars($category['image']) ?>"
+                            alt="<?= htmlspecialchars($category['name']) ?>" class="img-fluid"
                             style="height: 350px; width: 100%; object-fit: cover;">
                         <a href="/category/<?= $category['id'] ?>" class="category-inner d-block mt-2">
                             <?= htmlspecialchars($category['name']) ?>
