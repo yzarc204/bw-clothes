@@ -138,15 +138,15 @@
 ============================================ -->
 
 <!-- jQuery JS -->
-<script src="assets/boyka/js/vendor/jquery-3.5.1.min.js"></script>
-<script src="assets/boyka/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/boyka/js/vendor/jquery-3.5.1.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/boyka/js/vendor/jquery-migrate-3.3.0.min.js"></script>
 <!-- Popper JS -->
-<script src="assets/boyka/js/popper.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/boyka/js/popper.min.js"></script>
 <!-- Bootstrap JS -->
-<script src="assets/boyka/js/bootstrap.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/boyka/js/bootstrap.min.js"></script>
 <!-- Plugins JS -->
-<script src="assets/boyka/js/plugins.js"></script>
+<script src="<?= BASE_URL ?>/assets/boyka/js/plugins.js"></script>
 <!-- Ajax Mail -->
-<script src="assets/boyka/js/ajax-mail.js"></script>
+<script src="<?= BASE_URL ?>/assets/boyka/js/ajax-mail.js"></script>
 <!-- Main JS -->
-<script src="assets/boyka/js/main.js"></script>
+<script src="<?= BASE_URL ?>/assets/boyka/js/main.js"></script>

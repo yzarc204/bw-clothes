@@ -4,6 +4,7 @@ require_once './helpers/UploadHelper.php';
 require_once './helpers/ViewHelper.php';
 require_once './models/Product.php';
 require_once './models/Category.php';
+require_once './models/Variant.php';
 require_once './models/ProductImage.php';
 
 class ProductController
@@ -18,6 +19,21 @@ class ProductController
     $productModel = new Product();
     $products = $productModel->getProductDetailPaginated();
     require './views/admin/product/index.php';
+  }
+
+  public function detail($productId)
+  {
+    $this->validateProductId($productId);
+
+    $productModel = new Product();
+    $productImageModel = new ProductImage();
+    $variantModel = new Variant();
+
+    $product = $productModel->getDetailById($productId);
+    $images = $productImageModel->getByProductId($productId);
+    $variants = $variantModel->getVariantsByProductId($productId);
+
+    require './views/admin/product/detail.php';
   }
 
   public function create()
@@ -57,7 +73,7 @@ class ProductController
       $_SESSION['success'] = "Thêm sản phẩm {$name} thành công!";
       unset($_SESSION['error']);
       unset($_SESSION['old']);
-      header('Location: /admin/product/create');
+      header("Location: /admin/product/{$productId}/edit");
       exit;
     }
 

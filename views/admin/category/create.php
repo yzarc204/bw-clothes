@@ -28,7 +28,6 @@ require './views/layouts/adminlte/header.php';
     </div>
   </div>
 </div>
-</div>
 
 <?php
 require './views/layouts/adminlte/footer.php';

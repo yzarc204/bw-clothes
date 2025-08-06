@@ -14,12 +14,17 @@ function dequy($arr, $totalCase, $indexes = [], $result = [])
   }
 
   $values = [];
+
+  print_r($indexes);
+  echo '<br />';
+
   for ($i = count($arr) - 1; $i >= 0; $i--) {
     $vIndex = $indexes[$i];
+    echo $vIndex . '<br>';
     $values[] = $arr[$i][$vIndex];
-    if ($indexes[$i] <= 0) { // Nếu đã duyệt hết mảng thì reset index lại về ban đầu
+    if ($indexes[$i] <= 0 && $i != 0) { // Nếu đã duyệt hết mảng thì reset index lại về ban đầu
       $indexes[$i] = count($arr[$i]) - 1;
-    } else {
+    } else if ($indexes[$i] > 0) {
       $indexes[$i]--; // Nếu chưa duyệt hết mảng thì chuyển index về phần tử đứng trước phần tử hiện tại
     }
   }
@@ -40,8 +45,7 @@ function countTotalCase($arr)
 
 $attributes = [
   [1, 2],
-  ['a', 'b', 'c'],
-  ['x', 'y', 'z']
+  ['a', 'b'],
 ];
 $result = dequy($attributes, countTotalCase($attributes));
 print_r($result);
