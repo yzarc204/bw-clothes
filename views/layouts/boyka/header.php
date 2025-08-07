@@ -90,7 +90,7 @@
                         <ul>
                           <li><a href="my-account.html">Tài khoản</a></li>
                           <li><a href="checkout.html">Đơn hàng</a></li>
-                          <li><a href="login-register.html">Đăng xuất</a></li>
+                          <li><a href="/logout">Đăng xuất</a></li>
                         </ul>
                       </div>
                     </div>
