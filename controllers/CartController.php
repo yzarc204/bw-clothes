@@ -16,28 +16,35 @@ class CartController extends BaseModel
   public function index()
   {
     $user = getCurrentUser();
-    $stmt = $this->db->prepare("
-        SELECT c.*, p.name, p.price, p.sale_price,
-            (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
-        FROM carts c
-        JOIN products p ON c.product_id = p.id
-        WHERE c.user_id = ?
-        ");
-    $stmt->execute([$user['id']]);
-    $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $cartModel = new Cart();
+    $carts = $cartModel->getCartDetailsByUserId($user['id']);
+    $totalAmount = $cartModel->getCartTotalAmountByUserId($user['id']);
     include 'views/client/Cart.php';
   }
 
   public function addToCart()
   {
     $cartModel = new Cart();
+    $variantModel = new Variant();
     $user = getCurrentUser();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $variantId = isset($_POST['variant_id']) ? $_POST['variant_id'] : null;
       $quantity = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
 
-      $this->redirectIfValidationFailed($variantId, $quantity);
+      // Validate
+      $error = false;
+      if (empty($variantId))
+        $error = true;
+      if (!$variantModel->isset($variantId))
+        $error = true;
+      if (!$quantity || !is_numeric($quantity) || $quantity <= 0)
+        $error = true;
+      if ($error) {
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit;
+      }
+
       $cartModel->addToCart($user['id'], $variantId, $quantity);
 
       header('Location: /cart');
@@ -45,14 +52,23 @@ class CartController extends BaseModel
     }
   }
 
-  public function remove($productId)
+  public function remove($cartId)
   {
     $user = getCurrentUser();
+    $cartModel = new Cart();
 
-    $stmt = $this->db->prepare("DELETE FROM carts WHERE user_id = ? AND product_id = ?");
-    $stmt->execute([$user['id'], $productId]);
+    $error = false;
+    if (empty($cartId))
+      $error = true;
+    if (!$cartModel->isOwnedByUser($cartId, $user['id']))
+      $error = true;
+    if ($error) {
+      header('Location: /cart');
+      exit;
+    }
 
-    header("Location: /cart");
+    $cartModel->delete($cartId);
+    header('Location: /cart');
     exit;
   }
 
@@ -151,23 +167,5 @@ class CartController extends BaseModel
     }
 
     include 'views/client/checkout.php';
-  }
-
-  private function redirectIfValidationFailed($variantId, $quantity)
-  {
-    $variantModel = new Variant();
-
-    $error = false;
-    if (empty($variantId))
-      $error = true;
-    if (!$variantModel->isset($variantId))
-      $error = true;
-    if (!$quantity || !is_numeric($quantity) || $quantity <= 0)
-      $error = true;
-
-    if ($error) {
-      header("Location: " . $_SERVER['HTTP_REFERER']);
-      exit;
-    }
   }
 }
