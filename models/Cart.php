@@ -32,6 +32,14 @@ class Cart extends BaseModel
     return $stmt->execute();
   }
 
+  public function deleteAllByUserId($userId)
+  {
+    $sql = "DELETE FROM carts WHERE user_id = :user_id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('user_id', $userId, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
+
   public function getCartDetailsByUserId($userId)
   {
     $sql = "SELECT 

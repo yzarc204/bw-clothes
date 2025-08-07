@@ -83,14 +83,14 @@
                   <li class="setting-top list-inline-item">
                     <div class="btn-group">
                       <button class="dropdown-toggle">
-                        <i class="fa fa-user-circle-o"></i> Setting
+                        <i class="fa fa-user-circle-o"></i> <?= $user['name'] ?>
                         <i class="fa fa-angle-down"></i>
                       </button>
                       <div class="dropdown-menu">
                         <ul>
-                          <li><a href="my-account.html">My account</a></li>
-                          <li><a href="checkout.html">Checkout</a></li>
-                          <li><a href="login-register.html">Sign in</a></li>
+                          <li><a href="my-account.html">Tài khoản</a></li>
+                          <li><a href="checkout.html">Đơn hàng</a></li>
+                          <li><a href="login-register.html">Đăng xuất</a></li>
                         </ul>
                       </div>
                     </div>

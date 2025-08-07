@@ -40,7 +40,8 @@
         <li>
           <!-- shopping-cart-btn start -->
           <div class="shopping-cart-btn">
-            <a href="checkout.html">Thanh toán</a>
+            <a href="/cart">Xem</a>
+            <a href="/checkout">Thanh toán</a>
           </div>
           <!-- shopping-cart-btn end -->
         </li>
