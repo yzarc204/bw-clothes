@@ -1,41 +1,104 @@
 <?php
 require_once 'models/BaseModel.php';
 
-class CartModel extends BaseModel
+class Cart extends BaseModel
 {
-    public function getCartByUser($userId)
-    {
-        $sql = "SELECT c.*, p.name, p.price, p.sale_price,
-               (SELECT image_url FROM product_images WHERE product_id = c.product_id LIMIT 1) AS image
-        FROM carts c
-        JOIN products p ON c.product_id = p.id
-        WHERE c.user_id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+  public function addToCart($userId, $variantId, $quantity)
+  {
+    $sql = "INSERT INTO carts (user_id, variant_id, quantity)
+                VALUES (:user_id, :variant_id, :quantity)
+                ON DUPLICATE KEY UPDATE quantity = quantity + :quantity";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindParam('variant_id', $variantId, PDO::PARAM_INT);
+    $stmt->bindParam('quantity', $quantity, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
 
-    public function addToCart($userId, $productId, $quantity = 1)
-    {
-        // Kiểm tra đã có sản phẩm chưa
-        $stmt = $this->db->prepare("SELECT * FROM carts WHERE user_id = ? AND product_id = ?");
-        $stmt->execute([$userId, $productId]);
-        $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+  public function update($id, $quantity)
+  {
+    $sql = "UPDATE carts SET quantity = :quantity WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->bindParam('quantity', $quantity, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
 
-        if ($existing) {
-            // Cập nhật số lượng
-            $stmt = $this->db->prepare("UPDATE carts SET quantity = quantity + ? WHERE user_id = ? AND product_id = ?");
-            return $stmt->execute([$quantity, $userId, $productId]);
-        } else {
-            // Thêm mới
-            $stmt = $this->db->prepare("INSERT INTO carts (user_id, product_id, quantity) VALUES (?, ?, ?)");
-            return $stmt->execute([$userId, $productId, $quantity]);
-        }
-    }
+  public function delete($id)
+  {
+    $sql = "DELETE FROM carts WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
 
-    public function remove($userId, $productId)
-    {
-        $stmt = $this->db->prepare("DELETE FROM carts WHERE user_id = ? AND product_id = ?");
-        return $stmt->execute([$userId, $productId]);
-    }
+  public function deleteAllByUserId($userId)
+  {
+    $sql = "DELETE FROM carts WHERE user_id = :user_id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('user_id', $userId, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
+
+  public function getCartDetailsByUserId($userId)
+  {
+    $sql = "SELECT 
+              c.*, 
+              c2.name AS color,
+              s.name AS size, 
+              pv.price, 
+              pv.sale_price, 
+              p.id as product_id, 
+              p.name as product_name, 
+              p.featured_image,
+              COALESCE(pv.sale_price, pv.price) * c.quantity AS sub_total_amount
+            FROM carts c 
+            INNER JOIN product_variants pv 
+              ON c.variant_id = pv.id 
+            INNER JOIN products p 
+              ON pv.product_id = p.id 
+            INNER JOIN colors c2 
+              ON pv.color_id = c2.id 
+            INNER JOIN sizes s 
+              ON pv.size_id = s.id 
+            WHERE c.user_id = :user_id;
+        ";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('user_id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function getCartTotalAmountByUserId($userId)
+  {
+    $sql = "SELECT SUM(COALESCE(pv.sale_price, pv.price) * c.quantity) AS total_amount
+            FROM carts c 
+            INNER JOIN product_variants pv 
+              ON c.variant_id = pv.id 
+            WHERE c.user_id = :user_id;
+        ";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('user_id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn() ?? 0;
+  }
+
+  public function isset($id)
+  {
+    $sql = "SELECT COUNT(*) FROM carts WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn() > 0;
+  }
+
+  public function isOwnedByUser($id, $userId)
+  {
+    $sql = "SELECT COUNT(*) FROM carts WHERE user_id = :user_id AND id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn() > 0;
+  }
 }

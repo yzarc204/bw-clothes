@@ -1,156 +1,160 @@
 <?php
-require_once 'models/Product.php';
-require_once 'models/BaseModel.php';
-require_once 'helpers/AuthHelper.php';
-class CartController extends BaseModel
+require_once './models/Cart.php';
+require_once './models/Variant.php';
+require_once './models/Order.php';
+require_once './models/OrderDetail.php';
+require_once './helpers/AuthHelper.php';
+require_once './helpers/ViewHelper.php';
+class CartController
 {
-    public function __construct()
-    {
-        parent::__construct();
-        checkLogin();
-    }
+  public function __construct()
+  {
+    checkLogin();
+  }
 
-    public function index()
-    {
-        $user = getCurrentUser();
-        $stmt = $this->db->prepare("
-        SELECT c.*, p.name, p.price, p.sale_price,
-            (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
-        FROM carts c
-        JOIN products p ON c.product_id = p.id
-        WHERE c.user_id = ?
-        ");
-        $stmt->execute([$user['id']]);
-        $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        include 'views/client/Cart.php';
-    }
+  public function index()
+  {
+    $userCart = getUserCart();
+    include 'views/client/cart.php';
+  }
 
-    public function addToCart($productId)
-    {
-        $user = getCurrentUser();
-        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ chưa
-        $stmt = $this->db->prepare("SELECT * FROM carts WHERE user_id = ? AND product_id = ?");
-        $stmt->execute([$user['id'], (int)$productId]);
-        $item = $stmt->fetch(PDO::FETCH_ASSOC);
+  public function addToCart()
+  {
+    $cartModel = new Cart();
+    $variantModel = new Variant();
+    $user = getCurrentUser();
 
-        if ($item) {
-            // Nếu có rồi → cập nhật quantity
-            $this->db->prepare("UPDATE carts SET quantity = quantity + 1 WHERE id = ?")
-                ->execute([$item['id']]);
-        } else {
-            // Giả sử bạn có $userId và $productId
-            $stmt = $this->db->prepare("INSERT INTO carts (user_id, product_id, quantity) VALUES (?, ?, 1)")->execute([$user['id'], $productId]);
-        }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $variantId = isset($_POST['variant_id']) ? $_POST['variant_id'] : null;
+      $quantity = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
 
-        header("Location: /cart");
+      // Validate
+      $error = false;
+      if (empty($variantId))
+        $error = true;
+      if (!$variantModel->isset($variantId))
+        $error = true;
+      if (!$quantity || !is_numeric($quantity) || $quantity <= 0)
+        $error = true;
+      if ($error) {
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit;
+      }
+
+      $cartModel->addToCart($user['id'], $variantId, $quantity);
+
+      header('Location: /cart');
+      exit;
+    }
+  }
+
+  public function remove($cartId)
+  {
+    $user = getCurrentUser();
+    $cartModel = new Cart();
+
+    $error = false;
+    if (empty($cartId))
+      $error = true;
+    if (!$cartModel->isOwnedByUser($cartId, $user['id']))
+      $error = true;
+    if ($error) {
+      header('Location: /cart');
+      exit;
     }
 
-    public function remove($productId)
-    {
-        $user = getCurrentUser();
+    $cartModel->delete($cartId);
+    header('Location: /cart');
+    exit;
+  }
 
-        $stmt = $this->db->prepare("DELETE FROM carts WHERE user_id = ? AND product_id = ?");
-        $stmt->execute([$user['id'], $productId]);
+  public function update()
+  {
+    $cartModel = new Cart();
+    $user = getCurrentUser();
 
-        header("Location: /cart");
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : [];
+
+      foreach ($quantity as $cartId => $qty) {
+        // Validate
+        if (empty($cartId) || !filter_var($cartId, FILTER_VALIDATE_INT))
+          continue;
+        if (!$cartModel->isOwnedByUser($cartId, $user['id']))
+          continue;
+        $cartModel->update($cartId, $qty);
+      }
+
+      header('Location: /cart');
+      exit;
+    }
+  }
+
+  public function checkout()
+  {
+    $userCart = getUserCart();
+    if ($userCart['total_variants'] == 0) {
+      header('Location: /cart');
+      exit;
+    }
+
+    $orderModel = new Order();
+    $orderDetailModel = new OrderDetail();
+    $cartModel = new Cart();
+    $user = getCurrentUser();
+
+    $shippingFee = ($userCart['total_amount'] >= FREE_SHIPPING_THRESHOLD) ? 0 : SHIPPING_FEE;
+    $vatAmount = round($userCart['total_amount'] * VAT_RATE);
+    $totalAmount = $userCart['total_amount'] + $vatAmount + $shippingFee;
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $customerName = isset($_POST['customer_name']) ? trim($_POST['customer_name']) : null;
+      $phoneNumber = isset($_POST['phone_number']) ? trim($_POST['phone_number']) : null;
+      $address = isset($_POST['address']) ? trim($_POST['address']) : null;
+
+      // Validate
+      $errors = [];
+      if (empty($customerName))
+        $errors[] = 'Tên khách hàng không được để trống.';
+      if (strlen($customerName) < 3 || strlen($customerName) > 50)
+        $errors[] = 'Tên khách hàng phải từ 3 đến 50 ký tự.';
+      if (empty($phoneNumber))
+        $errors[] = 'Số điện thoại không được để trống.';
+      if (!preg_match('/^0[0-9]{9,10}$/', $phoneNumber))
+        $errors[] = 'Số điện thoại không hợp lệ.';
+      if (empty($address))
+        $errors[] = 'Địa chỉ không được để trống.';
+      if (strlen($address) > 255)
+        $errors[] = 'Địa chỉ không được quá 255 ký tự.';
+
+      if (!empty($errors)) {
+        $_SESSION['error'] = $errors[0];
+        header('Location: /checkout');
         exit;
+      }
+
+      // Tạo đơn hàng
+      $orderId = $orderModel->create($user['id'], $userCart['total_amount'], $vatAmount, $shippingFee, $totalAmount, $customerName, $address, $phoneNumber);
+
+      // Thêm chi tiết đơn hàng cho từng sản phẩm trong giỏ hàng
+      foreach ($userCart['carts'] as $item) {
+        $orderDetailModel->create(
+          $orderId,
+          $item['variant_id'],
+          $item['product_name'],
+          $item['size'],
+          $item['color'],
+          $item['price'],
+          $item['featured_image'],
+          $item['quantity'],
+          $item['sub_total_amount']
+        );
+      }
+
+      // Xoá cart
+      $cartModel->deleteAllByUserId($user['id']);
     }
 
-    public function update()
-    {
-        $user = getCurrentUser();
-        $userId = $user['id'];
-        foreach ($_POST['quantities'] as $productId => $qty) {
-            $qty = max(1, (int)$qty);
-
-            $stmt = $this->db->prepare("
-                INSERT INTO carts (user_id, product_id, quantity)
-                VALUES (:user_id, :product_id, :quantity)
-                ON DUPLICATE KEY UPDATE quantity = :quantity
-            ");
-            $stmt->execute([
-                ':user_id' => $userId,
-                ':product_id' => $productId,
-                ':quantity' => $qty
-            ]);
-        }
-
-        header("Location: /cart");
-        exit;
-    }
-
-    public function checkout()
-    {
-        $user = getCurrentUser();
-        $userId = $user['id'];
-
-        // Lấy giỏ hàng
-        $stmt = $this->db->prepare("
-        SELECT c.*, p.name, p.price, p.sale_price,
-            (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
-        FROM carts c
-        JOIN products p ON c.product_id = p.id
-        WHERE c.user_id = ?
-    ");
-        $stmt->execute([$userId]);
-        $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Lấy thông tin từ form
-            $customerName = $_POST['customer_name'] ?? '';
-            $phone = $_POST['phone_number'] ?? '';
-            $address = $_POST['address'] ?? '';
-
-            if (empty($customerName) || empty($phone) || empty($address)) {
-                die('Vui lòng điền đầy đủ thông tin.');
-            }
-
-            if (empty($cart)) {
-                die('Giỏ hàng rỗng.');
-            }
-
-            // Tính tổng tiền
-            $total = 0;
-            foreach ($cart as $item) {
-                $total += $item['price'] * $item['quantity'];
-            }
-
-            // 1. Thêm vào bảng orders
-            $stmt = $this->db->prepare("
-            INSERT INTO orders (user_id, customer_name, phone_number, address, total_amount, created_at)
-            VALUES (?, ?, ?, ?, ?, NOW())
-        ");
-            $stmt->execute([$userId, $customerName, $phone, $address, $total]);
-
-            $orderId = $this->db->lastInsertId();
-
-            // 2. Thêm vào bảng order_details
-            $stmt = $this->db->prepare("
-            INSERT INTO order_details (order_id, product_id, product_name, product_image, quantity, price, total_amount)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ");
-            foreach ($cart as $item) {
-                $totalAmount = $item['price'] * $item['quantity'];
-                $stmt->execute([
-                    $orderId,
-                    $item['product_id'],
-                    $item['name'],
-                    $item['image'],
-                    $item['quantity'],
-                    $item['price'],
-                    $totalAmount
-                ]);
-            }
-
-            // 3. Xóa giỏ hàng
-            $this->db->prepare("DELETE FROM carts WHERE user_id = ?")->execute([$userId]);
-
-            // 4. Chuyển hướng
-            header("Location: /cart?success=1");
-            exit;
-        }
-
-        include 'views/client/checkout.php';
-    }
+    require 'views/client/checkout.php';
+  }
 }

@@ -49,27 +49,20 @@ require './views/layouts/boyka/header.php';
         </div>
         <div class="product-wrapper">
             <div class="product-slider">
-                <?php foreach (array_slice($products, 0, 8) as $product): ?>
+                <?php foreach ($products as $product): ?>
                     <div class="single-product-wrap">
                         <div class="product-image">
-                            <a href="/product/<?= $product['id'] ?>"><img src="<?= $product['image'] ?>" alt=""></a>
-                            <?php if ($product['sale_price']): ?>
-                                <?php $discount = round(($product['price'] - $product['sale_price']) / $product['price'] * 100); ?>
-                                <span class="label-product label-new">SALE</span>
-                                <span class="label-product label-sale">-<?= $discount ?>%</span>
-                            <?php endif; ?>
-                            <div class="quick_view">
-                                <a href="#" title="quick view" class="quick-view-btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModalCenter"><i class="fa fa-search"></i></a>
-                            </div>
+                            <a href="/product/<?= $product['id'] ?>"><img
+                                    src="<?= BASE_URL . '/' . $product['featured_image'] ?>" alt=""></a>
+                            <span class="label-product label-new">SALE</span>
+                            <!-- <span class="label-product label-sale">5%</span> -->
                         </div>
                         <div class="product-content">
                             <h3><a href="/product/<?= $product['id'] ?>"><?= $product['name'] ?></a></h3>
                             <div class="price-box">
-                                <?php if ($product['sale_price']): ?>
-                                    <span class="new-price"><?= currencyFormat($product['sale_price']) ?>đ</span>
-                                <?php endif; ?>
-                                <span class="old-price"><?= currencyFormat($product['price']) ?>đ</span>
+                                <span class="new-price"><?= currencyFormat($product['min_price'] ?? 0) ?>đ</span>
+                                <span>-</span>
+                                <span class="new-price"><?= currencyFormat($product['max_price'] ?? 0) ?>đ</span>
                             </div>
                             <div class="product-action">
                                 <!-- <button class="add-to-cart" title="Add to cart"><i class="fa fa-plus"></i> Add to cart</button> -->

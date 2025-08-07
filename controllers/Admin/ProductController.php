@@ -16,8 +16,10 @@ class ProductController
 
   public function index()
   {
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+
     $productModel = new Product();
-    $products = $productModel->getProductDetailPaginated();
+    $products = $productModel->getDetailPaginated($page, 10);
     require './views/admin/product/index.php';
   }
 

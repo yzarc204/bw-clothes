@@ -83,14 +83,14 @@
                   <li class="setting-top list-inline-item">
                     <div class="btn-group">
                       <button class="dropdown-toggle">
-                        <i class="fa fa-user-circle-o"></i> Setting
+                        <i class="fa fa-user-circle-o"></i> <?= $user['name'] ?>
                         <i class="fa fa-angle-down"></i>
                       </button>
                       <div class="dropdown-menu">
                         <ul>
-                          <li><a href="my-account.html">My account</a></li>
-                          <li><a href="checkout.html">Checkout</a></li>
-                          <li><a href="login-register.html">Sign in</a></li>
+                          <li><a href="my-account.html">Tài khoản</a></li>
+                          <li><a href="checkout.html">Đơn hàng</a></li>
+                          <li><a href="login-register.html">Đăng xuất</a></li>
                         </ul>
                       </div>
                     </div>
@@ -300,72 +300,11 @@
                   <div class="btn-group">
                     <!-- Mini Cart Button start -->
                     <button class="dropdown-toggle">
-                      <i class="fa fa-shopping-cart"></i> Cart (2)
+                      <i class="fa fa-shopping-cart"></i> Giỏ hàng (<?= $userCart['total_variants'] ?>)
                     </button>
                     <!-- Mini Cart button end -->
 
-                    <!-- Mini Cart wrap start -->
-                    <div class="dropdown-menu mini-cart-wrap">
-                      <div class="shopping-cart-content">
-                        <ul class="mini-cart-content">
-                          <!-- Mini-Cart-item start -->
-                          <li class="mini-cart-item">
-                            <div class="mini-cart-product-img">
-                              <a href="#"><img src="assets/boyka/images/cart/1.jpg" alt="" /></a>
-                              <span class="product-quantity">1x</span>
-                            </div>
-                            <div class="mini-cart-product-desc">
-                              <h3><a href="#">Printed Summer Dress</a></h3>
-                              <div class="price-box">
-                                <span class="new-price">$55.21</span>
-                              </div>
-                              <div class="size">Size: S</div>
-                            </div>
-                            <div class="remove-from-cart">
-                              <a href="#" title="Remove"><i class="fa fa-trash"></i></a>
-                            </div>
-                          </li>
-                          <!-- Mini-Cart-item end -->
-
-                          <!-- Mini-Cart-item start -->
-                          <li class="mini-cart-item">
-                            <div class="mini-cart-product-img">
-                              <a href="#"><img src="assets/boyka/images/cart/3.jpg" alt="" /></a>
-                              <span class="product-quantity">1x</span>
-                            </div>
-                            <div class="mini-cart-product-desc">
-                              <h3><a href="#">Faded Sleeves T-shirt</a></h3>
-                              <div class="price-box">
-                                <span class="new-price">$72.21</span>
-                              </div>
-                              <div class="size">Size: M</div>
-                            </div>
-                            <div class="remove-from-cart">
-                              <a href="#" title="Remove"><i class="fa fa-trash"></i></a>
-                            </div>
-                          </li>
-                          <!-- Mini-Cart-item end -->
-
-                          <li>
-                            <!-- shopping-cart-total start -->
-                            <div class="shopping-cart-total">
-                              <h4>Sub-Total : <span>$127.42</span></h4>
-                              <h4>Total : <span>$127.42</span></h4>
-                            </div>
-                            <!-- shopping-cart-total end -->
-                          </li>
-
-                          <li>
-                            <!-- shopping-cart-btn start -->
-                            <div class="shopping-cart-btn">
-                              <a href="checkout.html">Checkout</a>
-                            </div>
-                            <!-- shopping-cart-btn end -->
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Mini Cart wrap End -->
+                    <?php require './views/layouts/boyka/mini_cart.php'; ?>
                   </div>
                 </div>
               </div>
