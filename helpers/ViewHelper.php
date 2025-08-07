@@ -57,3 +57,21 @@ function adminltePagination($pagination)
 {
   pagination($pagination, './views/layouts/adminlte/pagination.php');
 }
+
+function getUserCart()
+{
+  require_once './helpers/AuthHelper.php';
+  require_once './models/Cart.php';
+
+  $user = getCurrentUser();
+  $cartModel = new Cart();
+  $carts = $cartModel->getCartDetailsByUserId($user['id']);
+  $totalAmount = $cartModel->getCartTotalAmountByUserId($user['id']);
+  $totalVariants = count($carts);
+
+  return [
+    'carts' => $carts,
+    'total_amount' => $totalAmount,
+    'total_variants' => $totalVariants
+  ];
+}

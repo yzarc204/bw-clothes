@@ -15,6 +15,15 @@ class Cart extends BaseModel
     return $stmt->execute();
   }
 
+  public function update($id, $quantity)
+  {
+    $sql = "UPDATE carts SET quantity = :quantity WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->bindParam('quantity', $quantity, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
+
   public function delete($id)
   {
     $sql = "DELETE FROM carts WHERE id = :id";

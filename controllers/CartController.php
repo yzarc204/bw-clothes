@@ -74,25 +74,24 @@ class CartController extends BaseModel
 
   public function update()
   {
+    $cartModel = new Cart();
     $user = getCurrentUser();
-    $userId = $user['id'];
-    foreach ($_POST['quantities'] as $productId => $qty) {
-      $qty = max(1, (int) $qty);
 
-      $stmt = $this->db->prepare("
-                INSERT INTO carts (user_id, product_id, quantity)
-                VALUES (:user_id, :product_id, :quantity)
-                ON DUPLICATE KEY UPDATE quantity = :quantity
-            ");
-      $stmt->execute([
-        ':user_id' => $userId,
-        ':product_id' => $productId,
-        ':quantity' => $qty
-      ]);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : [];
+
+      foreach ($quantity as $cartId => $qty) {
+        // Validate
+        if (empty($cartId) || !filter_var($cartId, FILTER_VALIDATE_INT))
+          continue;
+        if (!$cartModel->isOwnedByUser($cartId, $user['id']))
+          continue;
+        $cartModel->update($cartId, $qty);
+      }
+
+      header('Location: /cart');
+      exit;
     }
-
-    header("Location: /cart");
-    exit;
   }
 
   public function checkout()

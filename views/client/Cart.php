@@ -5,7 +5,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <form action="#" class="cart-table">
+        <form action="/cart/update" method="POST" class="cart-table">
           <div class="table-content table-responsive">
             <table class="table table-hover">
               <thead>

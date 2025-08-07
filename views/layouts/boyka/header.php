@@ -300,7 +300,7 @@
                   <div class="btn-group">
                     <!-- Mini Cart Button start -->
                     <button class="dropdown-toggle">
-                      <i class="fa fa-shopping-cart"></i> Cart (2)
+                      <i class="fa fa-shopping-cart"></i> Giỏ hàng (<?= $userCart['total_variants'] ?>)
                     </button>
                     <!-- Mini Cart button end -->
 
@@ -308,49 +308,36 @@
                     <div class="dropdown-menu mini-cart-wrap">
                       <div class="shopping-cart-content">
                         <ul class="mini-cart-content">
-                          <!-- Mini-Cart-item start -->
-                          <li class="mini-cart-item">
-                            <div class="mini-cart-product-img">
-                              <a href="#"><img src="assets/boyka/images/cart/1.jpg" alt="" /></a>
-                              <span class="product-quantity">1x</span>
-                            </div>
-                            <div class="mini-cart-product-desc">
-                              <h3><a href="#">Printed Summer Dress</a></h3>
-                              <div class="price-box">
-                                <span class="new-price">$55.21</span>
+                          <?php foreach ($userCart['carts'] as $item): ?>
+                            <!-- Mini-Cart-item start -->
+                            <li class="mini-cart-item">
+                              <div class="mini-cart-product-img">
+                                <a href="/product/<?= $item['product_id'] ?>">
+                                  <img src="<?= BASE_URL . '/' . $item['featured_image'] ?>" alt="" />
+                                </a>
+                                <span class="product-quantity"><?= $item['quantity'] ?>x</span>
                               </div>
-                              <div class="size">Size: S</div>
-                            </div>
-                            <div class="remove-from-cart">
-                              <a href="#" title="Remove"><i class="fa fa-trash"></i></a>
-                            </div>
-                          </li>
-                          <!-- Mini-Cart-item end -->
-
-                          <!-- Mini-Cart-item start -->
-                          <li class="mini-cart-item">
-                            <div class="mini-cart-product-img">
-                              <a href="#"><img src="assets/boyka/images/cart/3.jpg" alt="" /></a>
-                              <span class="product-quantity">1x</span>
-                            </div>
-                            <div class="mini-cart-product-desc">
-                              <h3><a href="#">Faded Sleeves T-shirt</a></h3>
-                              <div class="price-box">
-                                <span class="new-price">$72.21</span>
+                              <div class="mini-cart-product-desc">
+                                <h3><a href="#"><?= $item['product_name'] ?></a></h3>
+                                <div class="price-box">
+                                  <span
+                                    class="new-price"><?= currencyFormat($item['sale_price'] ?? $item['price']) ?>đ</span>
+                                </div>
+                                <div class="size">Màu: <?= $item['color'] ?> | Size: <?= $item['size'] ?></div>
                               </div>
-                              <div class="size">Size: M</div>
-                            </div>
-                            <div class="remove-from-cart">
-                              <a href="#" title="Remove"><i class="fa fa-trash"></i></a>
-                            </div>
-                          </li>
-                          <!-- Mini-Cart-item end -->
-
+                              <div class="remove-from-cart">
+                                <a href="/cart/remove/<?= $item['id'] ?>" title="Xoá"
+                                  onclick="return confirm('Bạn có chắc chắn muốn xoá sản phẩm này khỏi giỏ hàng?')">
+                                  <i class="fa fa-trash"></i>
+                                </a>
+                              </div>
+                            </li>
+                            <!-- Mini-Cart-item end -->
+                          <?php endforeach; ?>
                           <li>
                             <!-- shopping-cart-total start -->
                             <div class="shopping-cart-total">
-                              <h4>Sub-Total : <span>$127.42</span></h4>
-                              <h4>Total : <span>$127.42</span></h4>
+                              <h4>Tạm tính : <span><?= currencyFormat($userCart['total_amount']) ?>đ</span></h4>
                             </div>
                             <!-- shopping-cart-total end -->
                           </li>
