@@ -76,6 +76,34 @@ class Product extends BaseModel
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
+  public function getDetailLimit($limit = 8)
+  {
+    $sql = "SELECT 
+              p.id,
+              p.name,
+              p.description,
+              p.featured_image,
+              p.rating,
+              c.name AS category_name,
+              MIN(COALESCE(pv.sale_price, pv.price)) AS min_price,
+              MAX(COALESCE(pv.sale_price, pv.price)) AS max_price
+          FROM 
+              products p
+          LEFT JOIN 
+              categories c ON p.category_id = c.id
+          LEFT JOIN 
+              product_variants pv ON p.id = pv.product_id
+          GROUP BY 
+              p.id, p.name, p.description, p.featured_image, p.rating, c.name
+          ORDER BY 
+              p.id DESC
+          LIMIT :limit";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function getPaginated($page = 1, $limit = 8)
   {
     $totalProducts = $this->getTotalCount();

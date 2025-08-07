@@ -18,7 +18,7 @@ class HomeController
     $productModel = new Product();
     $categoryModel = new Category();
 
-    $products = $productModel->getLimit(8);
+    $products = $productModel->getDetailLimit(8);
     $categories = $categoryModel->getAll();
 
     include 'views/client/home.php';

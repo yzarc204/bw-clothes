@@ -14,86 +14,102 @@ require './views/layouts/adminlte/header.php';
       <div class="card-body">
         <form action="/admin/variant/bulk/create" method="POST" class="mb-3">
           <input type="hidden" name="product_id" value="<?= $productId ?>">
-          <h5 class="mb-1">Thêm nhiều biến thể</h5>
-          <table>
-            <tr>
-              <?php foreach ($colors as $color): ?>
-                <td>
-                  <label class="form-check-label me-3">
-                    <input type="checkbox" class="form-check-input me-1" name="colors[]" value="<?= $color['id'] ?>">
-                    <?= $color['name'] ?>
-                  </label>
-                </td>
-              <?php endforeach; ?>
-            </tr>
-            <tr>
-              <?php foreach ($sizes as $size): ?>
-                <td>
-                  <label class="form-check-label me-3">
-                    <input type="checkbox" class="form-check-input me-1" name="sizes[]" value="<?= $size['id'] ?>">
-                    <?= $size['name'] ?>
-                  </label>
-                </td>
-              <?php endforeach; ?>
-            </tr>
-          </table>
+          <h5 class="mb-2">Thêm nhiều biến thể</h5>
+          <div class="d-flex gap-3 mb-2 flex-wrap">
+            <?php foreach ($colors as $color): ?>
+              <label class="form-check-label me-3">
+                <input type="checkbox" class="form-check-input me-1" name="colors[]" value="<?= $color['id'] ?>">
+                <?= $color['name'] ?>
+              </label>
+            <?php endforeach; ?>
+          </div>
+          <div class="d-flex gap-2 flex-wrap mb-2">
+            <?php foreach ($sizes as $size): ?>
+              <label class="form-check-label me-3">
+                <input type="checkbox" class="form-check-input me-1" name="sizes[]" value="<?= $size['id'] ?>">
+                <?= $size['name'] ?>
+              </label>
+            <?php endforeach; ?>
+          </div>
           <button class="btn btn-primary btn-sm">Thêm</button>
         </form>
 
         <hr class="mb-3">
 
-        <div class="form-group mb-3">
-          <form action="/admin/variant/create" method="POST" class="d-flex align-items-center gap-3">
+        <form action="/admin/variant/create" method="POST">
+          <div class="row mb-3 g-2">
             <input type="hidden" name="product_id" value="<?= $productId ?>">
-            <select class="form-select" name="color_id" id="">
-              <option value="" disabled selected>Chọn màu sắc</option>
-              <?php foreach ($colors as $color): ?>
-                <option value="<?= $color['id'] ?>"><?= $color['name'] ?></option>
-              <?php endforeach; ?>
-            </select>
-            <select class="form-select" name="size_id" id="">
-              <option value="" disabled selected>Chọn size</option>
-              <?php foreach ($sizes as $size): ?>
-                <option value="<?= $size['id'] ?>"><?= $size['name'] ?></option>
-              <?php endforeach; ?>
-            </select>
-            <input type="text" class="form-control" placeholder="Giá" name="price">
-            <input type="text" class="form-control" placeholder="Giá khuyến mãi" name="sale_price">
-
-            <button class="btn btn-success" type="submit">Thêm</button>
-          </form>
-        </div>
-        <hr class="mb-3">
-        <?php foreach ($variants as $variant): ?>
-          <div class="form-group mb-3">
-            <form action="/admin/variant/<?= $variant['id'] ?>/edit" method="POST"
-              class="d-flex align-items-center gap-3">
-              <input type="hidden" name="product_id" value="<?= $productId ?>">
+            <div class="col-lg-2 col-md-6">
               <select class="form-select" name="color_id" id="">
                 <option value="" disabled selected>Chọn màu sắc</option>
                 <?php foreach ($colors as $color): ?>
-                  <option value="<?= $color['id'] ?>" <?= $color['id'] === $variant['color_id'] ? 'selected' : '' ?>>
-                    <?= $color['name'] ?>
-                  </option>
+                  <option value="<?= $color['id'] ?>"><?= $color['name'] ?></option>
                 <?php endforeach; ?>
               </select>
+            </div>
+            <div class="col-lg-2 col-md-6">
               <select class="form-select" name="size_id" id="">
                 <option value="" disabled selected>Chọn size</option>
                 <?php foreach ($sizes as $size): ?>
-                  <option value="<?= $size['id'] ?>" <?= $size['id'] === $variant['size_id'] ? 'selected' : '' ?>>
-                    <?= $size['name'] ?>
-                  </option>
+                  <option value="<?= $size['id'] ?>"><?= $size['name'] ?></option>
                 <?php endforeach; ?>
               </select>
-              <input type="text" class="form-control" placeholder="Giá" name="price" value="<?= $variant['price'] ?>">
-              <input type="text" class="form-control" placeholder="Giá khuyến mãi" name="sale_price"
-                value="<?= $variant['sale_price'] ?>">
-
-              <button class="btn btn-primary" type="submit">Sửa</button>
-              <a href="/admin/variant/<?= $variant['id'] ?>/delete"
-                onclick="return confirm('Bạn chắc chắn muốn xóa biến thể này?')" class="btn btn-danger">Xóa</a>
-            </form>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <input type="text" class="form-control" placeholder="Giá" name="price">
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <input type="text" class="form-control" placeholder="Giá khuyến mãi" name="sale_price">
+            </div>
+            <div class="col-lg-2 col-md-12 col-12">
+              <button class="btn btn-success w-100" type="submit">Thêm</button>
+            </div>
           </div>
+        </form>
+
+        <hr class="mb-3">
+
+        <?php foreach ($variants as $variant): ?>
+          <form action="/admin/variant/<?= $variant['id'] ?>/edit" method="POST">
+            <div class="row mb-3 gx-3 g-2">
+              <input type="hidden" name="product_id" value="<?= $productId ?>">
+              <div class="col-lg-2 col-md-6">
+                <select class="form-select" name="color_id" id="">
+                  <option value="" disabled selected>Chọn màu sắc</option>
+                  <?php foreach ($colors as $color): ?>
+                    <option value="<?= $color['id'] ?>" <?= $color['id'] === $variant['color_id'] ? 'selected' : '' ?>>
+                      <?= $color['name'] ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="col-lg-2 col-md-6">
+                <select class="form-select" name="size_id" id="">
+                  <option value="" disabled selected>Chọn size</option>
+                  <?php foreach ($sizes as $size): ?>
+                    <option value="<?= $size['id'] ?>" <?= $size['id'] === $variant['size_id'] ? 'selected' : '' ?>>
+                      <?= $size['name'] ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <input type="text" class="form-control" placeholder="Giá" name="price" value="<?= $variant['price'] ?>">
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <input type="text" class="form-control" placeholder="Giá khuyến mãi" name="sale_price"
+                  value="<?= $variant['sale_price'] ?>">
+              </div>
+              <div class="col-lg-1 col-6">
+                <button class="btn btn-primary w-100" type="submit">Sửa</button>
+              </div>
+              <div class="col-lg-1 col-6">
+                <button class="btn btn-danger w-100" type="button"
+                  onclick="return confirm('Bạn chắc chắn muốn xóa biến thể này?')">Xóa</button>
+              </div>
+            </div>
+          </form>
+          <hr class="mb-3">
         <?php endforeach; ?>
       </div>
     </div>
