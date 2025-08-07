@@ -56,7 +56,7 @@ include './views/layouts/boyka/breadcrumb.php';
                             <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                             <div class="d-flex gap-2 flex-wrap">
                                 <?php foreach ($variants as $variant): ?>
-                                    <input type="radio" class="btn-check" name="variant_id"
+                                    <input type="radio" class="btn-check" name="variant_id" value="<?= $variant['id'] ?>"
                                         id="variant_<?= $variant['id'] ?>" data-price="<?= $variant['price'] ?>"
                                         data-sale-price="<?= $variant['sale_price'] ?>" autocomplete="off">
                                     <label class="btn btn-outline-dark" for="variant_<?= $variant['id'] ?>">
@@ -76,7 +76,8 @@ include './views/layouts/boyka/breadcrumb.php';
                                         </div>
                                     </div>
                                     <!-- <button class="add-to-cart" type="submit" >Add to cart</button> -->
-                                    <a class="add-to-cart" href="/cart/add/<?= $product['id'] ?>">Thêm vào giỏ</a>
+                                    <button class="add-to-cart" type="submit">Thêm vào
+                                        giỏ</button>
                                 </div>
                             </div>
                         </form>
