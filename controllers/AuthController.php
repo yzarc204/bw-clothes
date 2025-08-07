@@ -71,4 +71,11 @@ class AuthController
 
     require './views/client/register.php';
   }
+
+  public function logout()
+  {
+    session_destroy();
+    header('Location: /login');
+    exit;
+  }
 }

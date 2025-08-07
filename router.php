@@ -4,6 +4,7 @@ $routes = [
   '^$' => ['Home', 'index'],
   '^login$' => ['Auth', 'login'],
   '^register$' => ['Auth', 'register'],
+  '^logout$' => ['Auth', 'logout'],
   '^shop$' => ['Home', 'shop'],
   'product/(\d+)' => ['Home', 'product'],
   'cart' => ['Cart', 'index'],
