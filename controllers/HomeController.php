@@ -72,7 +72,7 @@ class HomeController
     }
 
     // Lấy sản phẩm theo category_id
-    $products = $productModel->getByCategoryId($category['id']);
+    $products = $productModel->getDetailPaginatedByCategoryId($category['id']);
     $breadcrumbTitle = "Danh mục: " . htmlspecialchars($category['name']);
 
     include 'views/client/Category.php';

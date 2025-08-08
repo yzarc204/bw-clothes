@@ -180,6 +180,62 @@ class Product extends BaseModel
     ];
   }
 
+  public function getDetailPaginatedByCategoryId($categoryId, $page = 1, $limit = 8)
+  {
+    $offset = ($page >= 1) ? ($page - 1) * $limit : 0;
+
+    $sql = "SELECT COUNT(*) FROM products WHERE category_id = :category_id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':category_id', $categoryId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $totalProducts = (int) $stmt->fetchColumn();
+    $totalPages = ceil($totalProducts / $limit);
+
+    $sql = "SELECT 
+              p.id,
+              p.name,
+              p.description,
+              p.featured_image,
+              p.rating,
+              c.name AS category_name,
+              MIN(COALESCE(pv.sale_price, pv.price)) AS min_price,
+              MAX(COALESCE(pv.sale_price, pv.price)) AS max_price
+          FROM 
+              products p
+          LEFT JOIN 
+              categories c ON p.category_id = c.id
+          LEFT JOIN 
+              product_variants pv ON p.id = pv.product_id
+          WHERE 
+            p.category_id = :category_id
+          GROUP BY 
+              p.id,
+              p.name,
+              p.description,
+              p.featured_image,
+              p.rating,
+              c.name
+          ORDER BY 
+              p.id DESC
+          LIMIT :limit 
+          OFFSET :offset";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindParam(':category_id', $categoryId, PDO::PARAM_INT);
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return [
+      'items' => $products,
+      'total_pages' => $totalPages,
+      'total_items' => $totalProducts,
+      'limit' => $limit,
+      'page' => $page
+    ];
+  }
+
   public function isset($id)
   {
     $sql = "SELECT COUNT(*) FROM products WHERE id = :id";
