@@ -46,6 +46,45 @@ class Order extends BaseModel
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
+  public function getDetailPaginated($page = 1, $limit = 10)
+  {
+    $offset = ($page - 1) * $limit;
+
+    $sql = "SELECT COUNT(*) FROM orders";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+
+    $totalOrders = $stmt->fetchColumn();
+    $totalPages = ceil($totalOrders / $limit);
+
+    $sql = "SELECT 
+              orders.*,
+              users.username,
+              SUM(order_details.quantity) AS total_items
+            FROM orders
+            INNER JOIN order_details
+              ON orders.id = order_details.order_id
+            INNER JOIN users
+              ON orders.user_id = users.id
+            GROUP BY orders.id 
+            ORDER BY orders.id DESC
+            LIMIT :limit
+            OFFSET :offset";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('offset', $offset, PDO::PARAM_INT);
+    $stmt->bindParam('limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return [
+      'items' => $orders,
+      'total_pages' => $totalPages,
+      'total_items' => $totalOrders,
+      'limit' => $limit,
+      'page' => $page
+    ];
+  }
+
   public function getPaginatedByUserId($userId, $page = 1, $limit = 10)
   {
     // Tính tổng số đơn hàng
