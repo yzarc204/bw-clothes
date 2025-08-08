@@ -29,11 +29,11 @@ class HomeController
     $categoryModel = new Category();
 
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $limit = 8;
+    $limit = 12;
     $paginationHref = '/shop?page=';
 
-    $products = $productModel->getPaginated($page, $limit); // hoặc phân trang giống như index()
-    $categories = $categoryModel->getAll();
+    $products = $productModel->getDetailPaginated($page, $limit); // hoặc phân trang giống như index()
+    $categories = $categoryModel->getAllDetail();
 
     include 'views/client/shop.php';
   }

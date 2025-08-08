@@ -24,20 +24,22 @@ include './views/layouts/boyka/breadcrumb.php';
                     <div class="single-product-wrap">
                         <div class="product-image">
                             <a href="#">
-                                <img src="<?= $product['image'] ?>" alt="<?= $product['name'] ?>">
+                                <img src="<?= BASE_URL . '/' . $product['featured_image'] ?>" alt="<?= $product['name'] ?>">
                             </a>
                         </div>
                         <div class="product-content">
                             <h3><?= $product['name'] ?></h3>
                             <div class="price-box">
-                                <span><?= number_format($product['price']) ?>₫</span>
+                                <span class="new-price"><?= currencyFormat($product['min_price'] ?? 0) ?>đ</span>
+                                <span>-</span>
+                                <span class="new-price"><?= currencyFormat($product['max_price'] ?? 0) ?>đ</span>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
-        <?php require './views/layouts/boyka/pagination.php'; ?>
+        <?php boykaPagination($products) ?>
     </div>
 </div>
 

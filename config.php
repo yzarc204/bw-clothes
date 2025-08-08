@@ -5,7 +5,7 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_HOST', '127.0.0.1');
 
-define('BASE_URL', 'http://du-an-1.local:8080');
+define('BASE_URL', 'http://bw-clothes.test');
 
 define('ALLOWED_IMAGE_EXTENSIONS', ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp']);
 
