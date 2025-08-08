@@ -1,30 +1,29 @@
 <div class="paginatoin-area">
     <div class="row">
         <div class="col-lg-6 col-md-6">
-            <p>Showing <?= ($products['page'] - 1) * $products['limit'] + 1 ?> - <?= min($products['page'] * $products['limit'] , $products['total_items']) ?> of <?= $products['total_items'] ?> item(s)</p>
+            <p>Hiển thị <?= $pagination['total_items'] ?> mục trong <?= $pagination['total_pages'] ?> trang</p>
         </div>
         <div class="col-lg-6 col-md-6">
-            <ul class="pagination-box justify-content-end">
-                <?php if ($products['page'] > 1): ?>
-                    <li>
-                        <a href="<?= $paginationHref . $products['page'] - 1 ?>" class="Previous">
-                            <i class="fa fa-chevron-left"></i> Previous
-                        </a>
-                    </li>
+            <ul class="pagination-box">
+                <?php if ($onFirstPage): ?>
+                    <li><a class="Previous"><i class="fa fa-chevron-left"></i></a></li>
+                <?php else: ?>
+                    <li><a href="<?= $prevPageUrl ?>" class="Previous"><i class="fa fa-chevron-left"></i></a></li>
                 <?php endif; ?>
 
-                <?php for ($i = 1; $i <= $products['total_pages']; $i++): ?>
-                    <li class="<?= ($i == $page) ? 'active' : '' ?>">
-                        <a href="<?= $paginationHref . $i ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
+                <?php foreach ($urls as $url): ?>
+                    <?php if ($url['page'] == $pagination['page']): ?>
+                        <li class="active"><a><?= $url['page'] ?></a></li>
+                    <?php else: ?>
+                        <li><a href="<?= $url['url'] ?>"><?= $url['page'] ?></a></li>
+                    <?php endif; ?>
 
-                <?php if ($page < $products['total_pages']): ?>
-                    <li>
-                        <a href="<?= $paginationHref . $products['page'] + 1 ?>" class="Next">
-                            Next <i class="fa fa-chevron-right"></i>
-                        </a>
-                    </li>
+                <?php endforeach; ?>
+
+                <?php if ($onLastPage): ?>
+                    <li><a class="Next"><i class="fa fa-chevron-right"></i></a></li>
+                <?php else: ?>
+                    <li><a href="<?= $nextPageUrl ?>" class="Next"><i class="fa fa-chevron-right"></i></a></li>
                 <?php endif; ?>
             </ul>
         </div>

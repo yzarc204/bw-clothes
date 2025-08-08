@@ -19,7 +19,7 @@ class ProductController
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
     $productModel = new Product();
-    $products = $productModel->getDetailPaginated($page, 10);
+    $products = $productModel->getDetailPaginated($page, 1);
     require './views/admin/product/index.php';
   }
 

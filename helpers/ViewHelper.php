@@ -20,6 +20,13 @@ function currencyFormat(float $number): string
   return number_format($number, 0, ',', '.');
 }
 
+function datetimeFormat($datetime)
+{
+  if (!$datetime)
+    return '';
+  return date('d-m-y H:i:s', strtotime($datetime));
+}
+
 function pagination($pagination, $view)
 {
   $onFirstPage = $pagination['page'] == 1;
@@ -35,14 +42,18 @@ function pagination($pagination, $view)
   $prevPageParams = array_merge($params, ['page' => $pagination['page'] - 1]);
   $prevPageUrl = $baseUrl . '?' . http_build_query($prevPageParams);
 
+  $minPage = max($pagination['page'] - 5, 1);
+  $maxPage = min($pagination['page'] + 5, $pagination['total_pages']);
   $urls = [];
-  for ($page = $pagination['page'] - 2; $page <= $pagination['page'] + 2; $page++) {
-    if ($page < 1 || $page > $pagination['total_pages'])
-      continue;
+
+  for ($page = $minPage; $page <= $maxPage; $page++) {
+    if ($page - $minPage >= 5) {
+      break;
+    }
 
     $baseUrl = '/' . $_GET['url'];
     $params = array_merge($params, ['page' => $page]);
-    $url = $baseUrl .= '?' . http_build_query($params);
+    $url = $baseUrl . '?' . http_build_query($params);
 
     $urls[] = [
       'page' => $page,
@@ -56,6 +67,11 @@ function pagination($pagination, $view)
 function adminltePagination($pagination)
 {
   pagination($pagination, './views/layouts/adminlte/pagination.php');
+}
+
+function boykaPagination($pagination)
+{
+  pagination($pagination, './views/layouts/boyka/pagination.php');
 }
 
 function getUserCart()

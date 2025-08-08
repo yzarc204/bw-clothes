@@ -1,21 +1,30 @@
 <?php
 
 $routes = [
+  // Xác thực người dùng
   '^$' => ['Home', 'index'],
   '^login$' => ['Auth', 'login'],
   '^register$' => ['Auth', 'register'],
   '^logout$' => ['Auth', 'logout'],
+  // Sản phẩm và cửa hàng
   '^shop$' => ['Home', 'shop'],
-  'product/(\d+)' => ['Home', 'product'],
-  'cart' => ['Cart', 'index'],
-  'cart/add' => ['Cart', 'addToCart'],
-  'cart/remove/(\d+)' => ['Cart', 'remove'],
-  'cart/update' => ['Cart', 'update'],
-  'search' => ['Home', 'search'],
-  'category/(\d+)' => ['Home', 'category'],
-  'checkout' => ['Cart', 'checkout'],
-  'about' => ['Home', 'about'],
-  'contact' => ['Home', 'contact'],
+  '^category/(\d+)$' => ['Home', 'category'],
+  '^search$' => ['Home', 'search'],
+  // Trang phụ
+  '^about$' => ['Home', 'about'],
+  '^contact$' => ['Home', 'contact'],
+  '^product/(\d+)$' => ['Home', 'product'],
+  // Giỏ hàng
+  '^cart$' => ['Cart', 'index'],
+  '^cart/add$' => ['Cart', 'addToCart'],
+  '^cart/remove/(\d+)$' => ['Cart', 'remove'],
+  '^cart/update$' => ['Cart', 'update'],
+  // Thanh toán
+  '^checkout$' => ['Cart', 'checkout'],
+  // Đơn hàng
+  '^order$' => ['Order', 'index'],
+  '^order/(\d+)$' => ['Order', 'detail'],
+  '^order/(\d+)/cancel$' => ['Order', 'cancel'],
 ];
 
 $adminRoutes = [
