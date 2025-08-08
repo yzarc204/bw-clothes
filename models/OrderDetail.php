@@ -19,4 +19,13 @@ class OrderDetail extends BaseModel
     $stmt->bindParam('total_amount', $totalAmount);
     return $stmt->execute();
   }
+
+  public function getDetailByOrderId($orderId)
+  {
+    $sql = "SELECT * FROM order_details WHERE order_id = :order_id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('order_id', $orderId, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
 }
