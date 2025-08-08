@@ -144,7 +144,7 @@ class CartController
           $item['product_name'],
           $item['size'],
           $item['color'],
-          $item['price'],
+          $item['sale_price'] ?? $item['price'],
           $item['featured_image'],
           $item['quantity'],
           $item['sub_total_amount']
@@ -153,6 +153,8 @@ class CartController
 
       // Xoá cart
       $cartModel->deleteAllByUserId($user['id']);
+
+      header('Location: /');
     }
 
     require 'views/client/checkout.php';

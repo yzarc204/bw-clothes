@@ -73,6 +73,25 @@ class Category extends BaseModel
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
+  public function getAllDetail()
+  {
+    // Lấy danh sách danh mục, số lượng sản phẩm và ảnh là ảnh của sản phẩm đầu tiên trong danh mục
+    $sql = "SELECT 
+              c.*,
+              COUNT(p.id) AS total_products,
+              MIN(p.featured_image) AS image
+            FROM 
+              categories c
+            LEFT JOIN 
+              products p ON c.id = p.category_id
+            GROUP BY 
+              c.id, c.name
+            ORDER BY 
+              c.name;";
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   /**
    * Lấy danh sách danh mục phân trang.
    *

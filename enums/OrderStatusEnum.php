@@ -16,4 +16,20 @@ class OrderStatusEnum extends MyEnum
     'received' => 'giao hàng thành công',
     'canceled' => 'đã huỷ'
   ];
+
+  public static function getColor($status)
+  {
+    switch ($status) {
+      case self::PENDING:
+        return 'warning';
+      case self::PROCESSING:
+        return 'info';
+      case self::DELIVERING:
+        return 'primary';
+      case self::RECEIVED:
+        return 'success';
+      case self::CANCELED:
+        return 'danger';
+    }
+  }
 }

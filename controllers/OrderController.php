@@ -49,6 +49,11 @@ class OrderController
       header('Location: /order');
       exit;
     }
+    $order = $orderModel->getById($orderId);
+    if ($order['status'] == OrderStatusEnum::CANCELED || $order['status'] == OrderStatusEnum::DELIVERING || $order['status'] == OrderStatusEnum::RECEIVED) {
+      header('Location: /order');
+      exit;
+    }
 
     $orderModel->updateStatus($orderId, OrderStatusEnum::CANCELED);
     header("Location: /order/{$orderId}");

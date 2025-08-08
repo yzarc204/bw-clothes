@@ -19,7 +19,7 @@ class HomeController
     $categoryModel = new Category();
 
     $products = $productModel->getDetailLimit(8);
-    $categories = $categoryModel->getAll();
+    $categories = $categoryModel->getAllDetail();
 
     include 'views/client/home.php';
   }

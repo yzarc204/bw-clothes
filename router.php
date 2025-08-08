@@ -1,27 +1,27 @@
 <?php
 
 $routes = [
-  // Xác thực người dùng
+  // Auth router
   '^$' => ['Home', 'index'],
   '^login$' => ['Auth', 'login'],
   '^register$' => ['Auth', 'register'],
   '^logout$' => ['Auth', 'logout'],
-  // Sản phẩm và cửa hàng
+  // Shop router
   '^shop$' => ['Home', 'shop'],
   '^category/(\d+)$' => ['Home', 'category'],
   '^search$' => ['Home', 'search'],
-  // Trang phụ
+  // Other pages router
   '^about$' => ['Home', 'about'],
   '^contact$' => ['Home', 'contact'],
   '^product/(\d+)$' => ['Home', 'product'],
-  // Giỏ hàng
+  // Cart router
   '^cart$' => ['Cart', 'index'],
   '^cart/add$' => ['Cart', 'addToCart'],
   '^cart/remove/(\d+)$' => ['Cart', 'remove'],
   '^cart/update$' => ['Cart', 'update'],
-  // Thanh toán
+  // Checkout router
   '^checkout$' => ['Cart', 'checkout'],
-  // Đơn hàng
+  // Order router
   '^order$' => ['Order', 'index'],
   '^order/(\d+)$' => ['Order', 'detail'],
   '^order/(\d+)/cancel$' => ['Order', 'cancel'],
@@ -57,4 +57,8 @@ $adminRoutes = [
   '^admin/size/create$' => ['Admin/Attribute', 'createSize'],
   '^admin/size/(\d+)/edit$' => ['Admin/Attribute', 'editSize'],
   '^admin/size/(\d+)/delete$' => ['Admin/Attribute', 'deleteSize'],
+  // Order router
+  '^admin/order$' => ['Admin/Order', 'index'],
+  '^admin/order/(\d+)$' => ['Admin/Order', 'detail'],
+  '^admin/order/(\d+)/status$' => ['Admin/Order', 'status'],
 ];

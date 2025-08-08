@@ -49,10 +49,12 @@
                   <li>Ngày đặt hàng <span><?= datetimeFormat($order['order_time']) ?></span></li>
                   <li>Ngày giao hàng <span><?= datetimeFormat($order['shipping_time']) ?></span></li>
                   <li>Ngày nhận hàng <span><?= datetimeFormat($order['delivered_time']) ?></span></li>
-                  <li>
-                    <a href="/order/<?= $order['id'] ?>/cancel" class="btn continue-btn"
-                      onclick="return confirm('Bạn có chắc chắn muốn huỷ đơn hàng này?')">Huỷ đơn hàng?</a>
-                  </li>
+                  <?php if ($order['status'] != OrderStatusEnum::CANCELED && $order['status'] != OrderStatusEnum::DELIVERING && $order['status'] == OrderStatusEnum::RECEIVED): ?>
+                    <li>
+                      <a href="/order/<?= $order['id'] ?>/cancel" class="btn continue-btn"
+                        onclick="return confirm('Bạn có chắc chắn muốn huỷ đơn hàng này?')">Huỷ đơn hàng?</a>
+                    </li>
+                  <?php endif; ?>
                 </ul>
               </div>
             </div>

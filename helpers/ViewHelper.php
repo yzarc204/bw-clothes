@@ -24,7 +24,7 @@ function datetimeFormat($datetime)
 {
   if (!$datetime)
     return '';
-  return date('d-m-y H:i:s', strtotime($datetime));
+  return date('d-m-Y H:i:s', strtotime($datetime));
 }
 
 function pagination($pagination, $view)
@@ -90,4 +90,12 @@ function getUserCart()
     'total_amount' => $totalAmount,
     'total_variants' => $totalVariants
   ];
+}
+
+function listCategories()
+{
+  require_once './models/Category.php';
+  $categoryModel = new Category();
+  $categories = $categoryModel->getAll();
+  return $categories;
 }

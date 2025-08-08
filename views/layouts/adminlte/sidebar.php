@@ -38,6 +38,12 @@
             <p>Thuộc tính biến thể</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a href="/admin/order" class="nav-link">
+            <i class="nav-icon bi bi-receipt"></i>
+            <p>Đơn hàng</p>
+          </a>
+        </li>
       </ul>
       <!--end::Sidebar Menu-->
     </nav>
