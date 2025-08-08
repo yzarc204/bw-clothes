@@ -1,6 +1,7 @@
 <?php
 $user = getCurrentUser();
 $userCart = getUserCart();
+$menuCategories = listCategories();
 ?>
 
 <!DOCTYPE html>

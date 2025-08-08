@@ -59,4 +59,6 @@ $adminRoutes = [
   '^admin/size/(\d+)/delete$' => ['Admin/Attribute', 'deleteSize'],
   // Order router
   '^admin/order$' => ['Admin/Order', 'index'],
+  '^admin/order/(\d+)$' => ['Admin/Order', 'detail'],
+  '^admin/order/(\d+)/status$' => ['Admin/Order', 'status'],
 ];

@@ -23,11 +23,11 @@ class Order extends BaseModel
 
   public function updateStatus($id, $status)
   {
-    $sql = "UPDATE orders SET status = :status ";
+    $sql = "UPDATE orders SET status = :status";
     if ($status == OrderStatusEnum::DELIVERING) {
-      $sql .= "AND shipping_time = NOW()";
+      $sql .= ", shipping_time = NOW()";
     } else if ($status == OrderStatusEnum::RECEIVED) {
-      $sql .= "AND delivered_time = NOW()";
+      $sql .= ", delivered_time = NOW()";
     }
     $sql .= " WHERE id = :id AND status <> :status";
 
@@ -40,6 +40,23 @@ class Order extends BaseModel
   public function getById($id)
   {
     $sql = "SELECT * FROM orders WHERE id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
+  public function getDetailById($id)
+  {
+    $sql = "SELECT 
+              orders.*,
+              users.username
+            FROM orders
+            INNER JOIN order_details
+              ON orders.id = order_details.order_id
+            INNER JOIN users
+              ON orders.user_id = users.id
+            WHERE orders.id = :id";
     $stmt = $this->db->prepare($sql);
     $stmt->bindParam('id', $id, PDO::PARAM_INT);
     $stmt->execute();
