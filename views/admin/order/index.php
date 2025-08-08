@@ -12,7 +12,6 @@ require './views/layouts/adminlte/header.php';
         <h3 class="card-title fw-bold">Quản lí đơn hàng</h3>
       </div>
       <div class="card-body">
-        <a class="btn btn-primary btn-sm mb-3" href="/admin/order/create">Thêm đơn hàng</a>
         <table class="table table-hover table-bordered">
           <thead>
             <tr>
