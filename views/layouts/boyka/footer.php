@@ -23,7 +23,10 @@
               </p>
               <div class="link-follow-footer">
                 <ul class="footer-social-share">
-                  <li><a href="https://github.com/yzarc204/bw-clothes" target="_blank"><i class="fa fa-github"></i></a>
+                  <li>
+                    <a href="https://github.com/yzarc204/bw-clothes" target="_blank" title="Source code on Github">
+                      <i class="fa fa-github"></i>
+                    </a>
                   </li>
                 </ul>
               </div>

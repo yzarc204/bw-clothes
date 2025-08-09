@@ -18,7 +18,7 @@
               <div class="price-box">
                 <span class="new-price"><?= currencyFormat($item['sale_price'] ?? $item['price']) ?>đ</span>
               </div>
-              <div class="size">Màu: <?= $item['color'] ?> | Size: <?= $item['size'] ?></div>
+              <div class="size"><?= $item['color'] ?> - <?= $item['size'] ?></div>
             </div>
             <div class="remove-from-cart">
               <a href="/cart/remove/<?= $item['id'] ?>" title="Xoá"

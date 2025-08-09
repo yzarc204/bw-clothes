@@ -36,8 +36,9 @@
                         </a>
                       </td>
                       <td class="plantmore-product-name">
-                        <a href="/product/<?= $item['product_id'] ?>"><?= $item['product_name'] ?></a>
-                        <p>Màu: <?= $item['color'] ?> | Size: <?= $item['size'] ?></p>
+                        <a href="/product/<?= $item['product_id'] ?>">
+                          <?= $item['product_name'] ?> (<?= $item['color'] ?> - <?= $item['size'] ?>)
+                        </a>
                       </td>
                       <td class="plantmore-product-price">
                         <?php if ($item['sale_price']): ?>

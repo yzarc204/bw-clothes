@@ -25,8 +25,7 @@
                         style="height: 75px;">
                     </td>
                     <td class="plantmore-product-name">
-                      <p><?= $item['product_name'] ?></p>
-                      <p>Màu: <?= $item['color_name'] ?> - Size: <?= $item['size_name'] ?></p>
+                      <?= $item['product_name'] ?> (<?= $item['color_name'] ?> - <?= $item['size_name'] ?>)
                     </td>
                     <td class="plantmore-product-price">
                       <span class="amount"><?= currencyFormat($item['price']) ?>đ</span>
