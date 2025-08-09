@@ -44,8 +44,6 @@ require './views/layouts/adminlte/header.php';
                 </td>
                 <td>
                   <a href="/admin/user/<?= $user['id'] ?>/edit" class="btn btn-primary btn-sm">Sửa</a>
-                  <a href="/admin/user/<?= $user['id'] ?>/delete" class="btn btn-danger btn-sm"
-                    onclick="return confirm('Bạn có chắc chắn muốn xoá người dùng này?');">Xoá</a>
                 </td>
               </tr>
             <?php endforeach; ?>

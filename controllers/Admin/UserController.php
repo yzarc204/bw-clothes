@@ -45,7 +45,7 @@ class UserController
       $userModel->update($userId, $username, $name, $isAdmin);
 
       $_SESSION['success'] = 'Cập nhật người dùng thành công';
-      header("Location: /admin/user/{$userId}");
+      header("Location: /admin/user/{$userId}/edit");
       exit;
     }
 
@@ -67,13 +67,14 @@ class UserController
   {
     $userModel = new User();
     $user = $userModel->getByUsername($username);
+    $loginedUser = getCurrentUser();
 
     $errors = [];
     if (empty($username))
       $errors[] = 'Vui lòng nhập tài khoản';
     if (strlen($username) < 5)
       $errors[] = 'Tài khoản phải có ít nhất 6 kí tự';
-    if ($user && $user['id'] !== $userId)
+    if ($user && $user['id'] != $userId)
       $errors[] = "Tài khoản {$username} đã tồn tại";
     if (empty($name))
       $errors[] = 'Vui lòng nhập tên';
@@ -81,6 +82,8 @@ class UserController
       $errors[] = 'Tên không hợp lệ. Tên chỉ bao gồm chữ cái và khoảng trắng';
     if ($isAdmin !== '0' && $isAdmin !== '1')
       $errors[] = 'Quyền không hợp lệ';
+    if ($userId == $loginedUser['id'] && $isAdmin == 0)
+      $errors[] = 'Không thể cập nhật quyền quản trị viên trên tài khoản đang được đăng nhập';
     return $errors;
   }
 }

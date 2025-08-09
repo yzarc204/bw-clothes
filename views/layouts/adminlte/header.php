@@ -97,38 +97,23 @@
           <!--begin::User Menu Dropdown-->
           <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-              <img src="https://ui-avatars.com/api/?background=random&name=<?= $user['name'] ?>"
+              <img src="https://ui-avatars.com/api/?background=random&name=<?= $loginedUser['name'] ?>"
                 class="user-image rounded-circle shadow" alt="User Image" />
-              <span class="d-none d-md-inline"><?= $user['name'] ?></span>
+              <span class="d-none d-md-inline"><?= $loginedUser['name'] ?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
               <!--begin::User Image-->
               <li class="user-header text-bg-primary">
-                <img src="https://ui-avatars.com/api/?background=random&name=<?= $user['name'] ?>"
+                <img src="https://ui-avatars.com/api/?background=random&name=<?= $loginedUser['name'] ?>"
                   class="rounded-circle shadow" alt="User Image" />
                 <p>
-                  <?= $user['name'] ?>
+                  <?= $loginedUser['name'] ?>
                   <small>Administrator</small>
                 </p>
               </li>
-              <!--end::User Image-->
-              <!--begin::Menu Body-->
-              <li class="user-body">
-                <!--begin::Row-->
-                <div class="row">
-                  <div class="col-4 text-center"><a href="#">Followers</a></div>
-                  <div class="col-4 text-center"><a href="#">Sales</a></div>
-                  <div class="col-4 text-center"><a href="#">Friends</a></div>
-                </div>
-                <!--end::Row-->
-              </li>
-              <!--end::Menu Body-->
-              <!--begin::Menu Footer-->
               <li class="user-footer">
-                <a href="#" class="btn btn-default btn-flat">Profile</a>
-                <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+                <a href="/logout" class="btn btn-default btn-flat text-danger">Đăng xuất</a>
               </li>
-              <!--end::Menu Footer-->
             </ul>
           </li>
           <!--end::User Menu Dropdown-->

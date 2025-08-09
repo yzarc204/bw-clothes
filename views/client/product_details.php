@@ -1,12 +1,6 @@
-<?php
-require './views/layouts/boyka/html_start.php';
-require './views/layouts/boyka/header.php';
-?>
-
-<?php
-$breadcrumbTitle = 'Thông tin sản phẩm';
-include './views/layouts/boyka/breadcrumb.php';
-?>
+<?php $pageTitle = $product['name'] . ' | BW-CLOZ'; ?>
+<?php require './views/layouts/boyka/html_start.php'; ?>
+<?php require './views/layouts/boyka/header.php'; ?>
 
 <div class="content-wraper">
   <div class="container">

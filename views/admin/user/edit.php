@@ -12,19 +12,19 @@
           <div class="row gx-4 gy-3">
             <?php require './views/layouts/adminlte/message.php'; ?>
 
-            <div class="col-md-6 col-12">
+            <div class="col-md-4 col-12">
               <label for="username" class="form-label">Tài khoản</label>
               <input type="text" class="form-control" id="username" name="username"
                 value="<?= $_SESSION['old']['username'] ?? $user['username'] ?? '' ?>" />
             </div>
 
-            <div class="col-md-6 col-12">
+            <div class="col-md-4 col-12">
               <label for="name" class="form-label">Tên</label>
               <input type="text" class="form-control" id="name" name="name"
                 value="<?= $_SESSION['old']['name'] ?? $user['name'] ?? '' ?>" />
             </div>
 
-            <div class="col-md-6 col-12">
+            <div class="col-md-4 col-12">
               <label for="is_admin" class="form-label">Quyền</label>
               <select class="form-control" id="is_admin" name="is_admin">
                 <option value="0" <?= ($_SESSION['old']['is_admin'] ?? $user['is_admin']) == 0 ? 'selected' : '' ?>>Người
@@ -35,7 +35,7 @@
             </div>
 
             <div class="col-12">
-              <button type="submit" class="btn btn-primary w-100">Cập nhật sản phẩm</button>
+              <button type="submit" class="btn btn-primary w-100">Cập nhật người dùng</button>
             </div>
           </div>
         </form>
