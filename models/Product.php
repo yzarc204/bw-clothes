@@ -12,7 +12,6 @@ class Product extends BaseModel
     $stmt->bindParam('category_id', $categoryId, PDO::PARAM_INT);
     $stmt->bindParam('description', $description, PDO::PARAM_STR);
     $stmt->bindParam('featured_image', $featuredImage, PDO::PARAM_STR);
-    // $stmt->bindParam('rating', 0, PDO::PARAM_INT);
     $stmt->execute();
     return (int) $this->db->lastInsertId();
   }
@@ -104,39 +103,23 @@ class Product extends BaseModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function getPaginated($page = 1, $limit = 8)
-  {
-    $totalProducts = $this->getTotalCount();
-    $totalPages = ceil($totalProducts / $limit);
-
-    $page = max(1, (int) $page);
-    $offset = ($page - 1) * $limit;
-
-    $sql = "SELECT p.*, 
-                       (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) AS image
-                FROM products p
-                ORDER BY id DESC
-                LIMIT :limit OFFSET :offset";
-    $stmt = $this->db->prepare($sql);
-    $stmt->bindParam('limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam('offset', $offset, PDO::PARAM_INT);
-    $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    return [
-      'items' => $products,
-      'total_pages' => $totalPages,
-      'total_items' => $totalProducts,
-      'limit' => $limit,
-      'page' => $page
-    ];
-  }
-
-  public function getDetailPaginated($page = 1, $limit = 8)
+  public function getDetailPaginated($page = 1, $limit = 8, $search = null)
   {
     $offset = ($page >= 1) ? ($page - 1) * $limit : 0;
 
-    $totalProducts = $this->getTotalCount();
+    // Tính tổng số lượng sản phẩm
+    $sql = "SELECT COUNT(*) FROM products";
+    if ($search) {
+      $sql .= " WHERE name LIKE :search";
+    }
+    $stmt = $this->db->prepare($sql);
+    if ($search) {
+      $searchParam = '%' . $search . '%';
+      $stmt->bindParam('search', $searchParam, PDO::PARAM_STR);
+    }
+    $stmt->execute();
+
+    $totalProducts = $stmt->fetchColumn();
     $totalPages = ceil($totalProducts / $limit);
 
     $sql = "SELECT 
@@ -153,8 +136,13 @@ class Product extends BaseModel
           LEFT JOIN 
               categories c ON p.category_id = c.id
           LEFT JOIN 
-              product_variants pv ON p.id = pv.product_id
-          GROUP BY 
+              product_variants pv ON p.id = pv.product_id";
+
+    if ($search) {
+      $sql .= " WHERE p.name LIKE :search";
+    }
+
+    $sql .= " GROUP BY 
               p.id,
               p.name,
               p.description,
@@ -166,6 +154,10 @@ class Product extends BaseModel
           LIMIT :limit 
           OFFSET :offset";
     $stmt = $this->db->prepare($sql);
+    if ($search) {
+      $searchParam = '%' . $search . '%';
+      $stmt->bindParam('search', $searchParam, PDO::PARAM_STR);
+    }
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();

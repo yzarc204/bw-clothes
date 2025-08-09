@@ -17,9 +17,10 @@ class ProductController
   public function index()
   {
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    $search = isset($_GET['search']) ? trim($_GET['search']) : null;
 
     $productModel = new Product();
-    $products = $productModel->getDetailPaginated($page, 10);
+    $products = $productModel->getDetailPaginated($page, 10, $search);
     require './views/admin/product/index.php';
   }
 
@@ -47,11 +48,11 @@ class ProductController
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_SESSION['old'] = $_POST;
 
-      $name = isset($_POST['name']) ? trim($_POST['name']) : null;
-      $categoryId = isset($_POST['category_id']) ? ($_POST['category_id'] ?? null) : null;
-      $description = isset($_POST['description']) ? $_POST['description'] : null;
-      $featuredImage = isset($_FILES['featured_image']) ? $_FILES['featured_image'] : null;
-      $images = isset($_FILES['images']) ? $_FILES['images'] : [];
+      $name = trim($_POST['name'] ?? '');
+      $categoryId = $_POST['category_id'] ?? null;
+      $description = $_POST['description'] ?? null;
+      $featuredImage = $_FILES['featured_image'] ?? null;
+      $images = $_FILES['images'] ?? [];
 
       $errors = $this->validate($name, $categoryId, $description, $featuredImage, $images);
       if (count($errors)) {
@@ -75,7 +76,7 @@ class ProductController
       $_SESSION['success'] = "Thêm sản phẩm {$name} thành công!";
       unset($_SESSION['error']);
       unset($_SESSION['old']);
-      header("Location: /admin/product/{$productId}/edit");
+      header("Location: /admin/product/{$productId}");
       exit;
     }
 
@@ -96,16 +97,16 @@ class ProductController
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_SESSION['old'] = $_POST;
 
-      $name = isset($_POST['name']) ? trim($_POST['name']) : null;
-      $categoryId = isset($_POST['category_id']) ? ($_POST['category_id'] ?? null) : null;
-      $description = isset($_POST['description']) ? $_POST['description'] : null;
-      $featuredImage = isset($_FILES['featured_image']) ? $_FILES['featured_image'] : null;
-      $images = isset($_FILES['images']) ? $_FILES['images'] : [];
+      $name = trim($_POST['name'] ?? '');
+      $categoryId = $_POST['category_id'] ?? null;
+      $description = $_POST['description'] ?? null;
+      $featuredImage = $_FILES['featured_image'] ?? null;
+      $images = $_FILES['images'] ?? [];
 
       $errors = $this->validate($name, $categoryId, $description, $featuredImage, $images, true);
       if (count($errors)) {
         $_SESSION['error'] = $errors[0];
-        header("Location: /admin/category/{$categoryId}/edit");
+        header("Location: /admin/product/{$productId}/edit");
         exit;
       }
 
@@ -189,7 +190,7 @@ class ProductController
       foreach ($images['name'] as $index => $imageName) {
         $extension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
         if (!in_array($extension, ALLOWED_IMAGE_EXTENSIONS)) {
-          $errors[] = 'Ảnh sản phẩm chỉ chấp nhận các format: ' . implode(', ', array: ALLOWED_IMAGE_EXTENSIONS);
+          $errors[] = 'Ảnh sản phẩm chỉ chấp nhận các format: ' . implode(', ', ALLOWED_IMAGE_EXTENSIONS);
         }
       }
     }
