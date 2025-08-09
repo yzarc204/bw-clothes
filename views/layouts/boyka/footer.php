@@ -21,6 +21,12 @@
                 <i class="fa fa-envelope-open-o"></i>
                 <span> bw.cloz@fpt.edu.vn</span>
               </p>
+              <div class="link-follow-footer">
+                <ul class="footer-social-share">
+                  <li><a href="https://github.com/yzarc204/bw-clothes" target="_blank"><i class="fa fa-github"></i></a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <!-- footer-info-area end -->
