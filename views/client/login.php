@@ -6,16 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đăng nhập</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/boyka/css/bootstrap.min.css" />
 
   <!-- Font CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/boyka/css/font-awesome.min.css" />
 
   <!-- Plugins CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/plugins.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/boyka/css/plugins.css" />
 
   <!-- Main Style CSS -->
-  <link rel="stylesheet" href="assets/boyka/css/style.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/boyka/css/style.css" />
 </head>
 
 <body>
@@ -26,7 +26,7 @@
           <div class="card" style="border-radius: 1rem;">
             <div class="row g-0">
               <div class="col-md-6 col-lg-5 d-none d-md-block">
-                <img src="assets/img/bg-auth.webp" alt="login form" class="img-fluid"
+                <img src="<?= BASE_URL ?>/assets/img/bg-auth.webp" alt="login form" class="img-fluid"
                   style="border-radius: 1rem 0 0 1rem; min-height: 100%; object-fit: cover; object-position: left;" />
               </div>
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
@@ -71,7 +71,7 @@
       </div>
     </div>
   </section>
-  <script src="assets/boyka/js/bootstrap.min.js"></script>
+  <script src="<?= BASE_URL ?>/assets/boyka/js/bootstrap.min.js"></script>
 </body>
 
 </html>

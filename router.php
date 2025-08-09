@@ -61,4 +61,7 @@ $adminRoutes = [
   '^admin/order$' => ['Admin/Order', 'index'],
   '^admin/order/(\d+)$' => ['Admin/Order', 'detail'],
   '^admin/order/(\d+)/status$' => ['Admin/Order', 'status'],
+  // User router
+  '^admin/user$' => ['Admin/User', 'index'],
+  '^admin/user/(\d+)/edit$' => ['Admin/User', 'edit'],
 ];

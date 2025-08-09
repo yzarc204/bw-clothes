@@ -18,12 +18,12 @@
                   <li class="setting-top list-inline-item">
                     <div class="btn-group">
                       <button class="dropdown-toggle">
-                        <i class="fa fa-user-circle-o"></i> <?= $user['name'] ?>
+                        <i class="fa fa-user-circle-o"></i> <?= $loginedUser['name'] ?>
                         <i class="fa fa-angle-down"></i>
                       </button>
                       <div class="dropdown-menu">
                         <ul>
-                          <?php if ($user['is_admin']): ?>
+                          <?php if ($loginedUser['is_admin']): ?>
                             <li><a href="/admin">Trang quản trị</a></li>
                           <?php endif; ?>
                           <li><a href="/order">Đơn hàng</a></li>
@@ -47,7 +47,7 @@
             <div class="col-lg-2 col-4">
               <!-- logo start -->
               <div class="logo">
-                <a href=""><img src="assets/boyka/images/logo/logo.png" alt="" /></a>
+                <a href="/"><img src="<?= BASE_URL . '/' . LOGO ?>" alt="" /></a>
               </div>
               <!-- logo end -->
             </div>
@@ -57,6 +57,7 @@
                 <nav class="main-navigation">
                   <ul>
                     <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/shop">Sản phẩm mới</a></li>
                     <?php foreach ($menuCategories as $category): ?>
                       <li><a href="/category/<?= $category['id'] ?>"><?= $category['name'] ?></a></li>
                     <?php endforeach; ?>
@@ -69,11 +70,11 @@
               <div class="header-bottom-right">
                 <div class="block-search">
                   <div class="trigger-search">
-                    <i class="fa fa-search"></i> <span>Search</span>
+                    <i class="fa fa-search"></i> <span>Tìm kiếm</span>
                   </div>
                   <div class="search-box main-search-active">
-                    <form action="search" class="search-box-inner">
-                      <input type="text" name="keyword" placeholder="Tìm kiếm ..." required />
+                    <form action="/shop" class="search-box-inner">
+                      <input type="text" name="s" placeholder="Tìm kiếm ..." required />
                       <button class="search-btn" type="submit">
                         <i class="fa fa-search"></i>
                       </button>

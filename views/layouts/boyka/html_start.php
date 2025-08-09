@@ -1,5 +1,5 @@
 <?php
-$user = getCurrentUser();
+$loginedUser = getCurrentUser();
 $userCart = getUserCart();
 $menuCategories = listCategories();
 ?>
@@ -10,7 +10,7 @@ $menuCategories = listCategories();
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>Boyka - Fashion eCommerce Bootstrap 4 HTML5 Template</title>
+  <title><?= isset($pageTitle) ? $pageTitle : 'BW - Cloz' ?></title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Favicon -->

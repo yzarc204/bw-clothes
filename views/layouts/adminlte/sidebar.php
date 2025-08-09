@@ -44,6 +44,12 @@
             <p>Đơn hàng</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a href="/admin/user" class="nav-link">
+            <i class="nav-icon bi bi-person-fill"></i>
+            <p>Quản lí người dùng</p>
+          </a>
+        </li>
       </ul>
       <!--end::Sidebar Menu-->
     </nav>

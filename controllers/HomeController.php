@@ -29,11 +29,10 @@ class HomeController
     $categoryModel = new Category();
 
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $limit = 12;
-    $paginationHref = '/shop?page=';
+    $keyword = isset($_GET['s']) ? $_GET['s'] : null;
 
-    $products = $productModel->getDetailPaginated($page, $limit); // hoặc phân trang giống như index()
-    $categories = $categoryModel->getAllDetail();
+    $products = $productModel->getDetailPaginated($page, 12, $keyword);
+    $categories = $categoryModel->getAll();
 
     include 'views/client/shop.php';
   }
@@ -49,33 +48,23 @@ class HomeController
 
     include 'views/client/product_details.php';
   }
-  public function search()
-  {
-    $keyword = $_GET['keyword'] ?? '';
 
-    $productModel = new Product();
-    $products = $productModel->searchProducts($keyword);
-
-    $breadcrumbTitle = "Kết quả tìm kiếm cho: " . htmlspecialchars($keyword);
-    include 'views/client/Search_results.php';
-  }
-  public function category($id)
+  public function category($categoryId)
   {
     $categoryModel = new Category();
     $productModel = new Product();
 
-    // Lấy danh mục theo ID
-    $category = $categoryModel->getById($id);
-    if (!$category) {
-      include 'views/errors/404.php'; // tạo file 404 nếu cần
-      return;
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+    $category = $categoryModel->getById($categoryId);
+    $products = $productModel->getDetailPaginatedByCategoryId($categoryId, $page, 12);
+
+    if (!$category || empty($products['items'])) {
+      header('Location: /');
+      exit;
     }
 
-    // Lấy sản phẩm theo category_id
-    $products = $productModel->getByCategoryId($category['id']);
-    $breadcrumbTitle = "Danh mục: " . htmlspecialchars($category['name']);
-
-    include 'views/client/Category.php';
+    include 'views/client/category.php';
   }
   public function about()
   {
