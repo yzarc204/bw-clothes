@@ -7,7 +7,7 @@
           <!-- footer-info-area start -->
           <div class="footer-info-area">
             <div class="footer-logo">
-              <a href="/"><img src="<?= BASE_URL . '/' . LOGO_FOOTER ?>" alt="" /></a>
+              <a href="/"><img src="<?= BASE_URL . '/' . LOGO_FOOTER ?>" alt="" style="max-height: 50px;" /></a>
             </div>
             <div class="desc_footer">
               <p>
@@ -23,7 +23,10 @@
               </p>
               <div class="link-follow-footer">
                 <ul class="footer-social-share">
-                  <li><a href="https://github.com/yzarc204/bw-clothes" target="_blank"><i class="fa fa-github"></i></a>
+                  <li>
+                    <a href="https://github.com/yzarc204/bw-clothes" target="_blank" title="Source code on Github">
+                      <i class="fa fa-github"></i>
+                    </a>
                   </li>
                 </ul>
               </div>

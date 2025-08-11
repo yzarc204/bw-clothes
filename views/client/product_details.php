@@ -4,7 +4,7 @@
 
 <div class="content-wraper">
   <div class="container">
-    <div class="row single-product-area">
+    <div class="row single-product-area mt-5">
       <div class="col-lg-5 col-md-6">
         <!-- Product Details Left -->
         <div class="product-details-left">
@@ -129,6 +129,36 @@
           <!-- End Single Content -->
           <!-- Start Single Content -->
           <div class="product_tab_content tab-pane" id="reviews" role="tabpanel">
+            <!-- Start RAting Area -->
+            <div class="rating_wrap">
+              <h2 class="rating-title">Đánh giá</h2>
+              <div class="rating_list">
+                <ul class="product-rating d-flex">
+                  <li><span class="fa fa-star text-warning" data-rating="1"></span></li>
+                  <li><span class="fa fa-star text-warning" data-rating="2"></span></li>
+                  <li><span class="fa fa-star text-warning" data-rating="3"></span></li>
+                  <li><span class="fa fa-star text-warning" data-rating="4"></span></li>
+                  <li><span class="fa fa-star text-warning" data-rating="5"></span></li>
+                </ul>
+              </div>
+            </div>
+            <!-- End RAting Area -->
+            <div class="comments-area comments-reply-area">
+              <div class="row mb-5">
+                <div class="col-lg-12">
+                  <form action="#" class="comment-form-area">
+                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                    <input type="hidden" name="rating" value="5">
+                    <p class="comment-form-comment">
+                      <textarea class="comment-notes" name="comment"></textarea>
+                    </p>
+                    <div class="comment-form-submit">
+                      <input type="submit" value="Đánh giá" class="comment-submit">
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
             <div class="review_address_inner">
               <!-- Start Single Review -->
               <div class="pro_review">
@@ -158,74 +188,6 @@
                 </div>
               </div>
               <!-- End Single Review -->
-              <!-- Start Single Review -->
-              <div class="pro_review ans">
-                <div class="review_thumb">
-                  <img alt="review images" src="assets/images/review/2.jpg">
-                </div>
-                <div class="review_details">
-                  <div class="review_info">
-                    <h4><a href="#">Gerald Barnes</a></h4>
-                    <ul class="product-rating d-flex">
-                      <li><span class="fa fa-star"></span></li>
-                      <li><span class="fa fa-star"></span></li>
-                      <li><span class="fa fa-star"></span></li>
-                      <li><span class="fa fa-star"></span></li>
-                      <li><span class="fa fa-star"></span></li>
-                    </ul>
-                    <div class="rating_send">
-                      <a href="#"><i class="fa fa-reply"></i></a>
-                    </div>
-                  </div>
-                  <div class="review_date">
-                    <span>27 Jun, 2023 at 4:32pm</span>
-                  </div>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas
-                    elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget eni Praesent
-                    et messages in con sectetur posuere dolor non.</p>
-                </div>
-              </div>
-              <!-- End Single Review -->
-            </div>
-            <!-- Start RAting Area -->
-            <div class="rating_wrap">
-              <h2 class="rating-title">Write A review</h2>
-              <h4 class="rating-title-2">Your Rating</h4>
-              <div class="rating_list">
-                <ul class="product-rating d-flex">
-                  <li><span class="fa fa-star"></span></li>
-                  <li><span class="fa fa-star"></span></li>
-                  <li><span class="fa fa-star"></span></li>
-                  <li><span class="fa fa-star"></span></li>
-                  <li><span class="fa fa-star"></span></li>
-                </ul>
-              </div>
-            </div>
-            <!-- End RAting Area -->
-            <div class="comments-area comments-reply-area">
-              <div class="row">
-                <div class="col-lg-12">
-                  <form action="#" class="comment-form-area">
-                    <div class="comment-input">
-                      <p class="comment-form-author">
-                        <label>Name <span class="required">*</span></label>
-                        <input type="text" required="required" name="Name">
-                      </p>
-                      <p class="comment-form-email">
-                        <label>Email <span class="required">*</span></label>
-                        <input type="text" required="required" name="email">
-                      </p>
-                    </div>
-                    <p class="comment-form-comment">
-                      <label>Comment</label>
-                      <textarea class="comment-notes" required="required"></textarea>
-                    </p>
-                    <div class="comment-form-submit">
-                      <input type="submit" value="Post Comment" class="comment-submit">
-                    </div>
-                  </form>
-                </div>
-              </div>
             </div>
           </div>
           <!-- End Single Content -->
@@ -266,6 +228,25 @@
   // Tự động check vào variant đầu tiên
   document.querySelector('input[name="variant_id"]').checked = true;
   document.querySelector('input[name="variant_id"]').dispatchEvent(new Event('change'));
+
+  // Cho phép người dùng chọn sao đánh giá
+  document.querySelectorAll('.fa-star').forEach(star => {
+    star.addEventListener('mouseover', function () {
+      const rating = this.getAttribute('data-rating');
+      document.querySelectorAll('.fa-star').forEach(star => {
+        if (star.getAttribute('data-rating') <= rating) {
+          star.classList.add('text-warning');
+        } else {
+          star.classList.remove('text-warning');
+        }
+      });
+    });
+    star.addEventListener('click', function () {
+      const rating = this.getAttribute('data-rating');
+      document.querySelector('input[name="rating"]').value = rating;
+      console.log(rating)
+    });
+  });
 </script>
 
 <?php include './views/layouts/boyka/html_end.php'; ?>

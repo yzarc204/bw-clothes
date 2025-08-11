@@ -4,11 +4,11 @@
 
 <!-- Banner -->
 <div class="hero-slider hero-slider-one slick-banner">
-  <?php for ($i = 1; $i <= 11; $i++): ?>
+  <?php for ($i = 1; $i <= 2; $i++): ?>
     <div class="single-slide"
-      style="background-image: url('<?= BASE_URL ?>/assets/boyka/images/banner/bg<?= $i ?>.jpg');">
+      style="background-image: url('<?= BASE_URL ?>/assets/boyka/images/slider/slider-bg-<?= $i ?>.jpg');">
       <div class="hero-content-one container text-center text-white">
-        <h1>BW-CLOZ - Thế giới thời trang</h1>
+        <!-- <h1>BW-CLOZ - Thế giới thời trang</h1> -->
         <a href="/shop" class="btn slider-btn uppercase"><span><i class="fa fa-plus"></i> Xem ngay</span></a>
       </div>
     </div>

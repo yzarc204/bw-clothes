@@ -47,7 +47,7 @@
             <div class="col-lg-2 col-4">
               <!-- logo start -->
               <div class="logo">
-                <a href="/"><img src="<?= BASE_URL . '/' . LOGO ?>" alt="" /></a>
+                <a href="/"><img src="<?= BASE_URL . '/' . LOGO ?>" alt="" style="max-height: 35px;" /></a>
               </div>
               <!-- logo end -->
             </div>
