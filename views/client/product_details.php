@@ -148,12 +148,12 @@
                 <div class="col-lg-12">
                   <form action="#" class="comment-form-area">
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                    <input type="hidden" name="rating">
+                    <input type="hidden" name="rating" value="5">
                     <p class="comment-form-comment">
                       <textarea class="comment-notes" name="comment"></textarea>
                     </p>
                     <div class="comment-form-submit">
-                      <input type="submit" value="Post Comment" class="comment-submit">
+                      <input type="submit" value="Đánh giá" class="comment-submit">
                     </div>
                   </form>
                 </div>

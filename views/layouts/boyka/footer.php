@@ -7,7 +7,7 @@
           <!-- footer-info-area start -->
           <div class="footer-info-area">
             <div class="footer-logo">
-              <a href="/"><img src="<?= BASE_URL . '/' . LOGO_FOOTER ?>" alt="" /></a>
+              <a href="/"><img src="<?= BASE_URL . '/' . LOGO_FOOTER ?>" alt="" style="max-height: 50px;" /></a>
             </div>
             <div class="desc_footer">
               <p>
