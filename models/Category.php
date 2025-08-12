@@ -99,14 +99,39 @@ class Category extends BaseModel
    * @param int $limit Số item mỗi trang (mặc định 8).
    * @return array Mảng chứa items, limit, page, total_items, total_pages.
    */
-  public function getPaginated($page = 1, $limit = 8)
+  public function getPaginated($page = 1, $limit = 8, $search = null)
   {
     $offset = ($page > 0) ? ($page - 1) * $limit : 0;
 
-    $sql = "SELECT * FROM categories ORDER BY id DESC LIMIT :limit OFFSET :offset";
+    // Đếm số lượng category
+    $sql = "SELECT COUNT(*) FROM categories";
+    if ($search) {
+      $sql .= " WHERE name LIKE :search";
+    }
+    $stmt = $this->db->prepare($sql);
+    if ($search) {
+      $searchParam = '%' . $search . '%';
+      $stmt->bindParam('search', $searchParam, PDO::PARAM_STR);
+    }
+    $stmt->execute();
+
+    $totalCategories = $stmt->fetchColumn();
+    $totalPages = ceil($totalCategories / $limit);
+
+    // Lấy danh sách category
+    $sql = "SELECT * FROM categories";
+    if ($search) {
+      $sql .= " WHERE name LIKE :search";
+    }
+    $sql .= " ORDER BY id DESC LIMIT :limit OFFSET :offset";
+
     $stmt = $this->db->prepare($sql);
     $stmt->bindParam('limit', $limit, PDO::PARAM_INT);
     $stmt->bindParam('offset', $offset, PDO::PARAM_INT);
+    if ($search) {
+      $searchParam = '%' . $search . '%';
+      $stmt->bindParam('search', $searchParam, PDO::PARAM_STR);
+    }
     $stmt->execute();
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -1,4 +1,10 @@
-<?php $pageTitle = 'Sản phẩm mới nhất | BW-CLOZ'; ?>
+<?php
+if ($keyword) {
+  $pageTitle = "Tìm kiếm: {$keyword} | BW-CLOZ";
+} else {
+  $pageTitle = 'Sản phẩm mới nhất | BW-CLOZ';
+}
+?>
 <?php include 'views/layouts/boyka/html_start.php'; ?>
 <?php include 'views/layouts/boyka/header.php'; ?>
 

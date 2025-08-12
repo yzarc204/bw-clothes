@@ -1,3 +1,4 @@
+<?php $pageTitle = "Chi tiết đơn hàng #{$order['id']}"; ?>
 <?php require './views/layouts/boyka/html_start.php'; ?>
 <?php require './views/layouts/boyka/header.php'; ?>
 
@@ -40,7 +41,17 @@
             </table>
           </div>
           <div class="row">
-            <div class="col-lg-4 col-md-6 col-12 mb-5">
+            <div class="col-lg-4 col-md-6 col-12 ms-auto mb-2 mb-md-5">
+              <div class="cart-page-total">
+                <h2></h2>
+                <ul>
+                  <li>Tên khách hàng <span><?= $order['customer_name'] ?></span></li>
+                  <li>Địa chỉ <span><?= $order['address'] ?></span></li>
+                  <li>Số điện thoại <span><?= $order['phone_number'] ?></span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12 mb-2 mb-md-5">
               <div class="cart-page-total">
                 <h2></h2>
                 <ul>
@@ -57,7 +68,7 @@
                 </ul>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-12 ms-auto mb-5">
+            <div class="col-lg-4 col-md-6 col-12 ms-auto mb-2 mb-md-5">
               <div class="cart-page-total">
                 <h2></h2>
                 <ul>

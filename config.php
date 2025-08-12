@@ -7,7 +7,7 @@ define('DB_HOST', '127.0.0.1');
 
 define('BASE_URL', 'http://du-an-1.local:8080');
 define('LOGO', 'assets/img/logo.png');
-define('LOGO_FOOTER', 'assets/img/logo.png');
+define('LOGO_FOOTER', 'assets/img/logo_footer.png');
 
 define('ALLOWED_IMAGE_EXTENSIONS', ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp']);
 

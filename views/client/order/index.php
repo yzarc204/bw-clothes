@@ -1,3 +1,4 @@
+<?php $pageTitle = "Danh sách đơn hàng | BW-CLOZ"; ?>
 <?php require './views/layouts/boyka/html_start.php'; ?>
 <?php require './views/layouts/boyka/header.php'; ?>
 

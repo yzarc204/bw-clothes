@@ -23,7 +23,8 @@ require './views/layouts/adminlte/header.php';
                     <option value="<?= $key ?>" <?= $order['status'] == $key ? 'selected' : '' ?>><?= $value ?></option>
                   <?php endforeach; ?>
                 </select>
-                <button class="btn btn-primary" type="submit">Cập nhật</button>
+                <button class="btn btn-primary" type="submit"
+                  onclick="return confirm('Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này?')">Cập nhật</button>
               </div>
             </form>
             <p>Ngày đặt hàng: <?= datetimeFormat($order['order_time']) ?></p>

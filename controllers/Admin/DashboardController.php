@@ -1,5 +1,7 @@
 <?php
 require_once './helpers/AuthHelper.php';
+require_once './helpers/ViewHelper.php';
+require_once './models/Statistics.php';
 
 class DashboardController
 {
@@ -10,9 +12,18 @@ class DashboardController
 
   public function index()
   {
-    require './views/layouts/adminlte/html_start.php';
-    require './views/layouts/adminlte/header.php';
-    require './views/layouts/adminlte/footer.php';
-    require './views/layouts/adminlte/html_end.php';
+    $statistics = new Statistics();
+
+    $totalProduct = $statistics->getTotalProduct();
+    $totalVariant = $statistics->getTotalVariant();
+    $totalOrder = $statistics->getTotalOrder();
+    $totalUser = $statistics->getTotalUser();
+
+    $totalRevenue = $statistics->getTotalRevenue();
+    $totalPurchasedProduct = $statistics->getTotalPurchasedProduct();
+    $totalSuccessOrder = $statistics->getTotalSuccessOrder();
+    $totalCancelOrder = $statistics->getTotalCancelOrder();
+
+    require './views/admin/dashboard.php';
   }
 }

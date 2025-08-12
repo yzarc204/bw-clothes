@@ -4,11 +4,10 @@
     <!--begin::Brand Link-->
     <a href="/admin" class="brand-link">
       <!--begin::Brand Image-->
-      <img src="<?= BASE_URL ?>/assets/adminlte/img/AdminLTELogo.png" alt="AdminLTE Logo"
-        class="brand-image opacity-75 shadow" />
+      <img src="<?= BASE_URL . '/' . LOGO_FOOTER ?>" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
       <!--end::Brand Image-->
       <!--begin::Brand Text-->
-      <span class="brand-text fw-light">AdminLTE 4</span>
+      <!-- <span class="brand-text fw-light">AdminLTE 4</span> -->
       <!--end::Brand Text-->
     </a>
     <!--end::Brand Link-->
@@ -20,6 +19,12 @@
       <!--begin::Sidebar Menu-->
       <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation"
         data-accordion="false" id="navigation">
+        <li class="nav-item">
+          <a href="/admin" class="nav-link">
+            <i class="nav-icon bi bi-bar-chart-line-fill"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
         <li class="nav-item">
           <a href="/admin/product" class="nav-link">
             <i class="nav-icon bi bi-archive-fill"></i>
