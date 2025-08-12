@@ -29,7 +29,7 @@ class Order extends BaseModel
     } else if ($status == OrderStatusEnum::RECEIVED) {
       $sql .= ", delivered_time = NOW()";
     }
-    $sql .= " WHERE id = :id AND status <> :status";
+    $sql .= " WHERE id = :id";
 
     $stmt = $this->db->prepare($sql);
     $stmt->bindParam('id', $id, PDO::PARAM_INT);

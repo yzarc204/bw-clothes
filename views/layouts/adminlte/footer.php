@@ -11,8 +11,9 @@
   <!--end::To the end-->
   <!--begin::Copyright-->
   <strong>
-    Copyright &copy; 2014-2025&nbsp;
-    <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.
+    Copyright &copy; <?= date('Y') ?>&nbsp;
+    <a href="https://github.com/yzarc204/bw-clothes" target="_blank" class="text-decoration-none"
+      title="Source code on Github">BW-CLOZ</a>.
   </strong>
   All rights reserved.
   <!--end::Copyright-->
