@@ -20,6 +20,12 @@
       <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation"
         data-accordion="false" id="navigation">
         <li class="nav-item">
+          <a href="/admin" class="nav-link">
+            <i class="nav-icon bi bi-bar-chart-line-fill"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="/admin/product" class="nav-link">
             <i class="nav-icon bi bi-archive-fill"></i>
             <p>Quản lí sản phẩm</p>
